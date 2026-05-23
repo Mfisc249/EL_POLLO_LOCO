@@ -1,18 +1,13 @@
 let canvas;
-let ctx;
-let character = new Character();
+let keyboard;
+let world;
 
-
-
-
-
+/**
+ * Initializes canvas, controls and the first playable world.
+ */
 function init() {
-    canvas = document.getElementById("gameCanvas");
-    ctx = canvas.getContext("2d");
-
-    console.log("My Character is", character);
-
-
+    canvas = document.getElementById('gameCanvas');
+    keyboard = new Keyboard();
+    world = new World(canvas, keyboard);
+    world.start();
 }
-
-   
