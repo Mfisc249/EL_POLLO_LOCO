@@ -10,13 +10,19 @@ class Level {
     }
 
     createBackgrounds() {
-        const backgrounds = [
-            'img/5_background/first_half_background.png',
-            'img/5_background/second_half_background.png',
-        ];
-        return [0, 720, 1440, 2160, 2880].map((x) => {
-            return new BackgroundObject(backgrounds[(x / 720) % 2], x);
+        return [0, 720, 1440, 2160, 2880].flatMap((x, index) => {
+            return this.createBackgroundSection(x, (index % 2) + 1);
         });
+    }
+
+    createBackgroundSection(x, imageNumber) {
+        const layerBasePath = 'img/5_background/layers';
+        return [
+            new BackgroundObject(`${layerBasePath}/air.png`, x),
+            new BackgroundObject(`${layerBasePath}/3_third_layer/${imageNumber}.png`, x),
+            new BackgroundObject(`${layerBasePath}/2_second_layer/${imageNumber}.png`, x),
+            new BackgroundObject(`${layerBasePath}/1_first_layer/${imageNumber}.png`, x),
+        ];
     }
 
     createEnemies() {
