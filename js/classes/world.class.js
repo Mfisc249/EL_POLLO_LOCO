@@ -52,11 +52,18 @@ class World {
     }
 
     updateLevelObjects() {
+        this.updateBackgrounds();
         this.level.enemies.forEach((enemy) => enemy.update(this.frame));
         this.level.coins.forEach((coin) => coin.update(this.frame));
         this.level.bottles.forEach((bottle) => bottle.update(this.frame));
         this.level.endboss.update(this.frame, this.character.x);
         this.updateThrowableObjects();
+    }
+
+    updateBackgrounds() {
+        this.level.backgrounds.forEach((background) => {
+            if (background.update) background.update(this.level.levelEndX);
+        });
     }
 
     updateThrowableObjects() {

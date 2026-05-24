@@ -19,6 +19,7 @@ class Level {
         const layerBasePath = 'img/5_background/layers';
         return [
             new BackgroundObject(`${layerBasePath}/air.png`, x),
+            new Cloud(`${layerBasePath}/4_clouds/${imageNumber}.png`, x),
             new BackgroundObject(`${layerBasePath}/3_third_layer/${imageNumber}.png`, x),
             new BackgroundObject(`${layerBasePath}/2_second_layer/${imageNumber}.png`, x),
             new BackgroundObject(`${layerBasePath}/1_first_layer/${imageNumber}.png`, x),
