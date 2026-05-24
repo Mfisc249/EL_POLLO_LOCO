@@ -151,39 +151,51 @@ button:hover {
 .button-label {
     position: absolute;
     top: var(--label-top);
-    right: 14%;
-    left: 14%;
+    right: var(--label-right, 12%);
+    left: var(--label-left, 12%);
+    transform: translateY(-50%);
     color: #74280f;
     font-family: "Diplomata SC", Georgia, serif;
-    font-size: clamp(10px, 2vw, 19px);
+    font-size: var(--label-size, clamp(8px, 1.45vw, 14px));
     line-height: 1.05;
-    overflow-wrap: anywhere;
+    overflow-wrap: normal;
     text-align: center;
     text-shadow: 0 2px 0 rgba(255, 214, 111, 0.55);
+    white-space: nowrap;
 }
 
 .sign-skull {
     --sign: url("img/el_pollo_loco_schilder_png/schild_1_totenkopf.png");
     --sign-ratio: 599 / 1379;
-    --label-top: 50%;
+    --label-left: 20%;
+    --label-right: 18%;
+    --label-top: 55%;
 }
 
 .sign-meadow {
     --sign: url("img/el_pollo_loco_schilder_png/schild_2_wiese.png");
     --sign-ratio: 675 / 1182;
-    --label-top: 40%;
+    --label-left: 21%;
+    --label-right: 17%;
+    --label-top: 44%;
 }
 
 .sign-snake {
     --sign: url("img/el_pollo_loco_schilder_png/schild_3_schlange.png");
     --sign-ratio: 577 / 1175;
-    --label-top: 40%;
+    --label-left: 18%;
+    --label-right: 14%;
+    --label-size: clamp(7px, 1.25vw, 12px);
+    --label-top: 43%;
 }
 
 .sign-hat {
     --sign: url("img/el_pollo_loco_schilder_png/schild_4_cowboyhut.png");
     --sign-ratio: 781 / 1232;
-    --label-top: 38%;
+    --label-left: 23%;
+    --label-right: 20%;
+    --label-size: clamp(7px, 1.25vw, 12px);
+    --label-top: 41%;
 }
 
 .legal-link {
