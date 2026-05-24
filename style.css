@@ -4,6 +4,12 @@
     font-display: swap;
 }
 
+@font-face {
+    font-family: "Diplomata SC";
+    src: url("fonts/DiplomataSC-Regular.ttf") format("truetype");
+    font-display: swap;
+}
+
 * {
     box-sizing: border-box;
 }
@@ -18,6 +24,7 @@ body {
     background: #123032 url("img/background.png") center / cover no-repeat fixed;
     color: #fff8d7;
     font-family: "Boogaloo", Arial, Helvetica, sans-serif;
+    gap: 14px;
     justify-content: center;
 }
 
@@ -27,10 +34,29 @@ p {
     margin-top: 0;
 }
 
+.page-title {
+    margin: 0;
+    color: #f8df61;
+    font-family: "Diplomata SC", Georgia, serif;
+    font-size: 56px;
+    font-weight: 400;
+    line-height: 1;
+    text-align: center;
+    text-shadow: 0 5px 0 #7a2b17, 0 10px 24px rgba(0, 0, 0, 0.5);
+}
+
+.is-playing .page-title {
+    display: none;
+}
+
 .game-shell {
     position: relative;
-    width: min(100vw, 960px, 150dvh);
+    width: min(100vw, 960px, 128dvh);
     aspect-ratio: 3 / 2;
+}
+
+.is-playing .game-shell {
+    width: min(100vw, 960px, 150dvh);
 }
 
 canvas {
@@ -77,13 +103,6 @@ button:hover {
 
 .screen-content {
     width: min(640px, 92%);
-}
-
-.screen h1 {
-    color: #f8df61;
-    font-size: clamp(48px, 12vw, 112px);
-    line-height: 0.9;
-    text-shadow: 0 6px 0 #7a2b17, 0 12px 26px rgba(0, 0, 0, 0.45);
 }
 
 .button-row {
@@ -194,8 +213,16 @@ button:hover {
     }
 
     .game-shell {
-        width: min(100vw, 150dvh);
+        width: min(100vw, 128dvh);
         max-width: none;
+    }
+
+    .is-playing .game-shell {
+        width: min(100vw, 150dvh);
+    }
+
+    .page-title {
+        font-size: 32px;
     }
 
     canvas {
