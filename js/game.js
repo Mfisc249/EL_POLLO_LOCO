@@ -99,6 +99,7 @@ function toggleMute() {
 
 function updateMuteButton() {
     const button = document.getElementById('muteButton');
-    button.textContent = soundManager.muted ? 'Ton aus' : 'Ton an';
+    const label = button.querySelector('.button-label') || button;
+    label.textContent = soundManager.muted ? 'Ton aus' : 'Ton an';
     button.setAttribute('aria-pressed', String(soundManager.muted));
 }

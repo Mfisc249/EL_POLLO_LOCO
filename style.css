@@ -81,7 +81,7 @@ button {
 }
 
 button:hover {
-    background: #55c7ad;
+    background-color: #55c7ad;
 }
 
 .primary-button {
@@ -102,7 +102,7 @@ button:hover {
 }
 
 .screen-content {
-    width: min(640px, 92%);
+    width: min(700px, 94%);
 }
 
 .button-row {
@@ -110,6 +110,80 @@ button:hover {
     flex-wrap: wrap;
     justify-content: center;
     gap: 12px;
+}
+
+.menu-buttons {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    align-items: end;
+    gap: 8px;
+    width: 100%;
+}
+
+.menu-button {
+    position: relative;
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+    aspect-ratio: var(--sign-ratio);
+    border: 0;
+    border-radius: 0;
+    background-color: transparent;
+    background-image: var(--sign);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    filter: drop-shadow(0 12px 12px rgba(0, 0, 0, 0.35));
+    padding: 0;
+}
+
+.menu-button:hover,
+.menu-button:focus-visible {
+    background-color: transparent;
+    filter: drop-shadow(0 16px 14px rgba(0, 0, 0, 0.45));
+    transform: translateY(-5px);
+}
+
+.menu-button:active {
+    transform: translateY(-1px);
+}
+
+.button-label {
+    position: absolute;
+    top: var(--label-top);
+    right: 14%;
+    left: 14%;
+    color: #74280f;
+    font-family: "Diplomata SC", Georgia, serif;
+    font-size: clamp(10px, 2vw, 19px);
+    line-height: 1.05;
+    overflow-wrap: anywhere;
+    text-align: center;
+    text-shadow: 0 2px 0 rgba(255, 214, 111, 0.55);
+}
+
+.sign-skull {
+    --sign: url("img/el_pollo_loco_schilder_png/schild_1_totenkopf.png");
+    --sign-ratio: 599 / 1379;
+    --label-top: 50%;
+}
+
+.sign-meadow {
+    --sign: url("img/el_pollo_loco_schilder_png/schild_2_wiese.png");
+    --sign-ratio: 675 / 1182;
+    --label-top: 40%;
+}
+
+.sign-snake {
+    --sign: url("img/el_pollo_loco_schilder_png/schild_3_schlange.png");
+    --sign-ratio: 577 / 1175;
+    --label-top: 40%;
+}
+
+.sign-hat {
+    --sign: url("img/el_pollo_loco_schilder_png/schild_4_cowboyhut.png");
+    --sign-ratio: 781 / 1232;
+    --label-top: 38%;
 }
 
 .legal-link {
@@ -223,6 +297,14 @@ button:hover {
 
     .page-title {
         font-size: 32px;
+    }
+
+    .menu-buttons {
+        gap: 4px;
+    }
+
+    .button-label {
+        font-size: clamp(9px, 2.5vw, 15px);
     }
 
     canvas {
