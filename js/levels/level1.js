@@ -10,8 +10,12 @@ class Level {
     }
 
     createBackgrounds() {
+        const backgrounds = [
+            'img/5_background/first_half_background.png',
+            'img/5_background/second_half_background.png',
+        ];
         return [0, 720, 1440, 2160, 2880].map((x) => {
-            return new BackgroundObject('img/5_background/complete_background.png', x);
+            return new BackgroundObject(backgrounds[(x / 720) % 2], x);
         });
     }
 
