@@ -8,10 +8,11 @@ class World {
     state = 'playing';
     endResult = '';
 
-    constructor(canvas, keyboard, onFinish = null) {
+    constructor(canvas, keyboard, soundManager = null, onFinish = null) {
         this.canvas = canvas;
         this.ctx = canvas.getContext('2d');
         this.keyboard = keyboard;
+        this.soundManager = soundManager;
         this.level = createLevel();
         this.onFinish = onFinish;
         this.createStatusBars();
@@ -41,6 +42,7 @@ class World {
     }
 
     update() {
+        this.playJumpSound();
         this.character.update(this.keyboard, this.level.levelEndX, this.frame);
         this.updateLevelObjects();
         this.handleBottleThrow();
@@ -122,6 +124,7 @@ class World {
         this.throwableObjects.push(new ThrowableObject(x, this.character.y + 110, direction));
         this.character.useBottle();
         this.lastThrowAt = Date.now();
+        this.playSound('playThrow');
     }
 
     checkCollisions() {
@@ -150,10 +153,13 @@ class World {
         if (enemy instanceof Endboss) return this.hitCharacter(enemy.damage);
         enemy.kill();
         this.character.bounce();
+        this.playSound('playChicken');
     }
 
     hitCharacter(damage) {
+        const wasHurt = this.character.isHurt();
         this.character.hit(damage);
+        if (!wasHurt) this.playSound('playHit');
         if (this.character.isDead()) this.finishGame('lost');
     }
 
@@ -171,6 +177,7 @@ class World {
     collectItem(item, type) {
         if (!this.character.isColliding(item)) return true;
         type === 'coin' ? this.character.collectCoin() : this.character.collectBottle();
+        type === 'coin' ? this.playSound('playCoin') : this.playSound('playBottle');
         return false;
     }
 
@@ -194,6 +201,7 @@ class World {
 
     damageBottleTarget(target) {
         target instanceof Endboss ? target.hit(20) : target.kill();
+        target instanceof Endboss ? this.playSound('playHit') : this.playSound('playChicken');
         if (this.level.endboss.isDead()) this.finishGame('won');
     }
 
@@ -201,6 +209,7 @@ class World {
         if (this.state === 'ended') return;
         this.state = 'ended';
         this.endResult = result;
+        this.playEndSound(result);
         this.draw();
         if (this.onFinish) setTimeout(() => this.onFinish(result), 700);
     }
@@ -216,5 +225,19 @@ class World {
 
     endText() {
         return this.endResult === 'won' ? 'You won!' : 'Game over';
+    }
+
+    playJumpSound() {
+        if (this.keyboard.UP && !this.character.isAboveGround()) {
+            this.playSound('playJump');
+        }
+    }
+
+    playEndSound(result) {
+        result === 'won' ? this.playSound('playWin') : this.playSound('playLose');
+    }
+
+    playSound(methodName) {
+        if (this.soundManager) this.soundManager[methodName]();
     }
 }

@@ -13,6 +13,7 @@
     <script src="js/classes/collectable-object.class.js"></script>
     <script src="js/classes/throwable-object.class.js"></script>
     <script src="js/classes/status-bar.class.js"></script>
+    <script src="js/classes/sound-manager.class.js"></script>
     <script src="js/classes/character.class.js"></script>
     <script src="js/classes/chicken.class.js"></script>
     <script src="js/classes/endboss.class.js"></script>
@@ -22,21 +23,51 @@
 
 </head>
 <body onload="init()">
-    
-    <h1>El Pollo Loco</h1>
+    <main id="gameShell" class="game-shell">
+        <canvas id="gameCanvas" width="720" height="480"></canvas>
 
+        <section id="homeScreen" class="screen home-screen">
+            <div class="screen-content">
+                <h1>El Pollo Loco</h1>
+                <div class="button-row">
+                    <button id="startButton" class="primary-button" type="button">Start</button>
+                    <button id="helpButton" type="button">Hilfe</button>
+                    <button id="fullscreenButton" type="button">Vollbild</button>
+                    <button id="muteButton" type="button" aria-pressed="false">Ton an</button>
+                </div>
+                <a class="legal-link" href="impressum.html">Impressum</a>
+            </div>
+        </section>
 
-    <canvas id="gameCanvas" width="720" height="480">
+        <section id="endScreen" class="screen end-screen hidden">
+            <img id="resultImage" src="img/You won, you lost/Game Over.png" alt="Game over">
+            <div class="button-row">
+                <button id="restartButton" class="primary-button" type="button">Restart</button>
+                <button id="homeButton" type="button">Home</button>
+            </div>
+        </section>
 
+        <nav class="mobile-controls" aria-label="Mobile Steuerung">
+            <div class="control-group">
+                <button data-key="LEFT" type="button" aria-label="Links">&#8592;</button>
+                <button data-key="RIGHT" type="button" aria-label="Rechts">&#8594;</button>
+            </div>
+            <div class="control-group">
+                <button data-key="UP" type="button" aria-label="Springen">&#8593;</button>
+                <button data-key="THROW" type="button" aria-label="Werfen">F</button>
+            </div>
+        </nav>
+    </main>
 
+    <dialog id="helpDialog" class="help-dialog">
+        <button id="closeHelpButton" class="close-button" type="button" aria-label="Schliessen">x</button>
+        <h2>Steuerung</h2>
+        <p>Laufe mit A/D oder den Pfeiltasten. Springe mit W, Pfeil hoch oder Leertaste. Wirf eine Flasche mit F.</p>
+        <p>Sammle Coins und Salsa-Flaschen, besiege Huehner von oben und triff den Endboss mit Flaschen.</p>
+    </dialog>
 
-
-    </canvas>
-
-
-
-
-
-
+    <div class="orientation-message">
+        <p>Bitte drehe dein Geraet ins Querformat.</p>
+    </div>
 </body>
 </html>

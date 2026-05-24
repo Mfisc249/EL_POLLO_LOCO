@@ -40,8 +40,16 @@ class Keyboard {
         const key = button.dataset.key;
         button.addEventListener('pointerdown', (event) => this.setTouch(event, key, true));
         button.addEventListener('pointerup', (event) => this.setTouch(event, key, false));
+        button.addEventListener('pointerleave', (event) => this.setTouch(event, key, false));
         button.addEventListener('pointercancel', (event) => this.setTouch(event, key, false));
         button.addEventListener('contextmenu', (event) => event.preventDefault());
+    }
+
+    reset() {
+        this.LEFT = false;
+        this.RIGHT = false;
+        this.UP = false;
+        this.THROW = false;
     }
 
     setTouch(event, key, pressed) {

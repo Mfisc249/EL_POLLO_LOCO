@@ -1,20 +1,210 @@
+@font-face {
+    font-family: "Boogaloo";
+    src: url("fonts/Boogaloo-Regular.ttf") format("truetype");
+    font-display: swap;
+}
+
+* {
+    box-sizing: border-box;
+}
+
 body {
     display: flex;
     flex-direction: column;
     align-items: center;
     min-height: 100vh;
     margin: 0;
-    background: #19130c;
+    overflow: hidden;
+    background: #123032;
     color: #fff8d7;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: "Boogaloo", Arial, Helvetica, sans-serif;
     justify-content: center;
 }
 
+h1,
+h2,
+p {
+    margin-top: 0;
+}
 
+.game-shell {
+    position: relative;
+    width: min(100vw, 960px, 150dvh);
+    aspect-ratio: 3 / 2;
+}
 
 canvas {
     background-color: #000;
-    max-width: 100%;
+    display: block;
+    width: 100%;
+    height: 100%;
     border: 4px solid #5f341a;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+}
+
+button {
+    min-width: 92px;
+    min-height: 44px;
+    border: 0;
+    border-radius: 8px;
+    background: #fff1a8;
+    color: #341808;
+    cursor: pointer;
+    font: inherit;
+    padding: 8px 16px;
+}
+
+button:hover {
+    background: #55c7ad;
+}
+
+.primary-button {
+    background: #f5b83b;
+}
+
+.screen {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    text-align: center;
+}
+
+.home-screen {
+    background: linear-gradient(rgba(18, 48, 50, 0.05), rgba(18, 48, 50, 0.55)), url("img/9_intro_outro_screens/start/startscreen_1.png") center / cover;
+}
+
+.screen-content {
+    width: min(640px, 92%);
+}
+
+.screen h1 {
+    color: #f8df61;
+    font-size: clamp(48px, 12vw, 112px);
+    line-height: 0.9;
+    text-shadow: 0 6px 0 #7a2b17, 0 12px 26px rgba(0, 0, 0, 0.45);
+}
+
+.button-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+}
+
+.legal-link {
+    display: inline-block;
+    margin-top: 20px;
+    color: #fff8d7;
+}
+
+.hidden {
+    display: none;
+}
+
+.end-screen {
+    background: rgba(18, 48, 50, 0.78);
+}
+
+.end-screen img {
+    width: min(560px, 86%);
+    max-height: 52%;
+    object-fit: contain;
+    margin-bottom: 28px;
+}
+
+.mobile-controls {
+    position: absolute;
+    inset: auto 18px 14px;
+    display: none;
+    justify-content: space-between;
+    pointer-events: none;
+}
+
+.control-group {
+    display: flex;
+    gap: 12px;
+    pointer-events: auto;
+}
+
+.mobile-controls button {
+    min-width: 54px;
+    min-height: 54px;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    background: rgba(18, 48, 50, 0.78);
+    color: #fff8d7;
+    user-select: none;
+    touch-action: none;
+}
+
+.help-dialog {
+    width: min(520px, calc(100vw - 32px));
+    border: 0;
+    border-radius: 8px;
+    background: #fff8d7;
+    color: #261406;
+    padding: 28px;
+}
+
+.help-dialog::backdrop {
+    background: rgba(0, 0, 0, 0.55);
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    min-width: 36px;
+    min-height: 36px;
+    padding: 0;
+}
+
+.orientation-message {
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+    display: none;
+    place-items: center;
+    padding: 24px;
+    background: #123032;
+    color: #fff8d7;
+    text-align: center;
+    font-size: 32px;
+}
+
+.legal-page {
+    align-items: stretch;
+    justify-content: flex-start;
+    overflow: auto;
+    padding: 40px 20px;
+}
+
+.legal-content {
+    width: min(780px, 100%);
+    margin: 0 auto;
+    border-radius: 8px;
+    background: rgba(255, 248, 215, 0.12);
+    padding: 32px;
+}
+
+@media (max-width: 900px), (hover: none) {
+    .mobile-controls {
+        display: flex;
+    }
+
+    .game-shell {
+        width: min(100vw, 150dvh);
+        max-width: none;
+    }
+
+    canvas {
+        border: 0;
+    }
+}
+
+@media (orientation: portrait) and (max-width: 900px) {
+    .orientation-message {
+        display: grid;
+    }
 }
