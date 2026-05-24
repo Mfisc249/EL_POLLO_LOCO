@@ -98,7 +98,13 @@ button:hover {
 }
 
 .home-screen {
-    background: linear-gradient(rgba(18, 48, 50, 0.05), rgba(18, 48, 50, 0.55)), url("img/9_intro_outro_screens/start/startscreen_1.png") center / cover;
+    background-color: #123032;
+    background-image:
+        linear-gradient(rgba(8, 20, 18, 0.38), rgba(8, 20, 18, 0.72)),
+        url("img/9_intro_outro_screens/start/startscreen_1.png");
+    background-position: center, center 54%;
+    background-repeat: no-repeat;
+    background-size: cover, contain;
 }
 
 .screen-content {
