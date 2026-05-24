@@ -47,6 +47,7 @@ class Chicken extends MovableObject {
     loadChickenImages() {
         this.loadImage(this.animationImages()[0]);
         this.loadImages(this.animationImages());
+        this.loadImages([this.deadImagePath()]);
     }
 
     animationImages() {
@@ -54,7 +55,11 @@ class Chicken extends MovableObject {
     }
 
     showDeadImage() {
+        this.img = this.imageCache[this.deadImagePath()];
+    }
+
+    deadImagePath() {
         const folder = this.type === 'small' ? 'chicken_small' : 'chicken_normal';
-        this.loadImage(`img/3_enemies_chicken/${folder}/2_dead/dead.png`);
+        return `img/3_enemies_chicken/${folder}/2_dead/dead.png`;
     }
 }
