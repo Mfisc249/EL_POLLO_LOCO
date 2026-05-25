@@ -139,7 +139,7 @@ button:hover {
     background-position: center;
     background-repeat: no-repeat;
     background-size: contain;
-    filter: drop-shadow(0 12px 12px rgba(0, 0, 0, 0.35));
+    filter: drop-shadow(0 12px 12px rgba(0, 0, 0, 0.15));
     padding: 0;
 }
 
@@ -245,6 +245,7 @@ button:hover {
     border: 2px solid rgba(255, 255, 255, 0.8);
     background: rgba(18, 48, 50, 0.78);
     color: #fff8d7;
+    -webkit-user-select: none;
     user-select: none;
     touch-action: none;
 }
