@@ -160,13 +160,13 @@ class World {
         if (enemy instanceof Endboss) return this.hitCharacter(enemy.damage);
         enemy.kill();
         this.character.bounce();
-        this.playSound('playChicken');
+        this.playSound('playStompChicken');
     }
 
     hitCharacter(damage) {
         const wasHurt = this.character.isHurt();
         this.character.hit(damage);
-        if (!wasHurt) this.playSound('playHit');
+        if (!wasHurt) this.playSound('playHurt');
         if (this.character.isDead()) this.finishGame('lost');
     }
 
@@ -208,7 +208,7 @@ class World {
 
     damageBottleTarget(target) {
         target instanceof Endboss ? target.hit(20) : target.kill();
-        target instanceof Endboss ? this.playSound('playHit') : this.playSound('playChicken');
+        target instanceof Endboss ? this.playSound('playBoss') : this.playSound('playEnemyHit');
         if (this.level.endboss.isDead()) this.finishGame('won');
     }
 

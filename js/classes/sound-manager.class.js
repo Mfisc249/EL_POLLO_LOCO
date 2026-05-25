@@ -1,12 +1,31 @@
+const SOUND_CONFIG = {
+    jump: ['audio/jump.wav', 0.34],
+    coin: ['audio/coin_collect.wav', 0.42],
+    bottle: ['audio/bottle_collect.wav', 0.42],
+    throw: ['audio/throw_bottle.wav', 0.36],
+    hurt: ['audio/hurt.wav', 0.42],
+    enemyHit: ['audio/enemy_hit.wav', 0.44],
+    boss: ['audio/boss_rooster.wav', 0.42],
+    stomp: ['audio/stomp_chicken.wav', 0.42],
+    win: ['audio/game_win.wav', 0.5],
+    lose: ['audio/game_lose.wav', 0.5],
+};
+
+const CHICKEN_CLUCKS = [
+    ['audio/chicken_cluck_1.wav', 0.34],
+    ['audio/chicken_cluck_2.wav', 0.34],
+    ['audio/chicken_cluck_3.wav', 0.34],
+];
+
 class SoundManager {
     muted = false;
-    context = null;
-    musicTimer = null;
-    noteIndex = 0;
-    musicNotes = [196, 246, 293, 246, 220, 196, 164];
+    sounds = {};
+    chickenSounds = [];
 
     constructor() {
         this.muted = localStorage.getItem('polloMuted') === 'true';
+        this.music = this.createAudio('audio/background_desert_loop.wav', 0.24, true);
+        this.loadSounds();
     }
 
     /**
@@ -17,94 +36,116 @@ class SoundManager {
     }
 
     /**
-     * Starts a tiny looping background melody.
+     * Starts the background music loop.
      */
     startMusic() {
         if (this.muted) return;
-        this.stopMusic();
-        this.musicTimer = setInterval(() => this.playMusicNote(), 460);
+        this.resetAudio(this.music);
+        this.playAudio(this.music, true);
     }
 
     /**
-     * Stops the background melody.
+     * Stops the background music loop.
      */
     stopMusic() {
-        clearInterval(this.musicTimer);
-        this.musicTimer = null;
+        this.music.pause();
+        this.resetAudio(this.music);
     }
 
     playJump() {
-        this.playTone(420, 0.12, 'triangle', 0.035);
+        this.playSound('jump');
     }
 
     playCoin() {
-        this.playTone(760, 0.09, 'sine', 0.045);
+        this.playSound('coin');
     }
 
     playBottle() {
-        this.playTone(520, 0.11, 'square', 0.025);
+        this.playSound('bottle');
     }
 
     playThrow() {
-        this.playTone(240, 0.13, 'sawtooth', 0.03);
+        this.playSound('throw');
     }
 
-    playHit() {
-        this.playTone(120, 0.18, 'square', 0.04);
+    playHurt() {
+        this.playSound('hurt');
     }
 
-    playChicken() {
-        this.playTone(630, 0.12, 'square', 0.03);
+    playEnemyHit() {
+        this.playSound('enemyHit');
+        this.playRandomChicken();
+    }
+
+    playBoss() {
+        this.playSound('boss');
+    }
+
+    playStompChicken() {
+        this.playSound('stomp');
+        this.playRandomChicken();
     }
 
     playWin() {
-        [523, 659, 784].forEach((note, index) => this.playTone(note, 0.2, 'triangle', 0.04, index * 0.14));
+        this.playSound('win');
     }
 
     playLose() {
-        [220, 174, 130].forEach((note, index) => this.playTone(note, 0.22, 'sawtooth', 0.035, index * 0.16));
+        this.playSound('lose');
     }
 
     setMuted(muted) {
         this.muted = muted;
         localStorage.setItem('polloMuted', String(muted));
+        this.updateMutedState();
         if (muted) this.stopMusic();
     }
 
-    playMusicNote() {
-        const note = this.musicNotes[this.noteIndex % this.musicNotes.length];
-        this.playTone(note, 0.18, 'triangle', 0.018);
-        this.noteIndex++;
+    loadSounds() {
+        Object.entries(SOUND_CONFIG).forEach(([name, config]) => {
+            this.sounds[name] = this.createAudio(config[0], config[1]);
+        });
+        this.chickenSounds = CHICKEN_CLUCKS.map((config) => this.createAudio(config[0], config[1]));
     }
 
-    playTone(frequency, duration, type, volume, delay = 0) {
-        if (this.muted || !this.prepareContext()) return;
-        const oscillator = this.context.createOscillator();
-        const gain = this.context.createGain();
-        this.configureTone(oscillator, gain, frequency, type, volume);
-        this.scheduleTone(oscillator, gain, duration, delay);
+    createAudio(path, volume, loop = false) {
+        const audio = new Audio(path);
+        audio.loop = loop;
+        audio.muted = this.muted;
+        audio.preload = 'auto';
+        audio.volume = volume;
+        return audio;
     }
 
-    prepareContext() {
-        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-        if (!AudioContextClass) return false;
-        if (!this.context) this.context = new AudioContextClass();
-        if (this.context.state === 'suspended') this.context.resume();
-        return true;
+    playSound(name) {
+        this.playAudio(this.sounds[name]);
     }
 
-    configureTone(oscillator, gain, frequency, type, volume) {
-        oscillator.type = type;
-        oscillator.frequency.value = frequency;
-        gain.gain.value = volume;
-        oscillator.connect(gain);
-        gain.connect(this.context.destination);
+    playAudio(audio, reuse = false) {
+        if (this.muted || !audio) return;
+        const sound = reuse ? audio : audio.cloneNode(true);
+        sound.volume = audio.volume;
+        sound.muted = this.muted;
+        const promise = sound.play();
+        if (promise) promise.catch(() => {});
     }
 
-    scheduleTone(oscillator, gain, duration, delay) {
-        const startAt = this.context.currentTime + delay;
-        gain.gain.exponentialRampToValueAtTime(0.001, startAt + duration);
-        oscillator.start(startAt);
-        oscillator.stop(startAt + duration);
+    playRandomChicken() {
+        const index = Math.floor(Math.random() * this.chickenSounds.length);
+        this.playAudio(this.chickenSounds[index]);
+    }
+
+    updateMutedState() {
+        this.music.muted = this.muted;
+        Object.values(this.sounds).forEach((audio) => audio.muted = this.muted);
+        this.chickenSounds.forEach((audio) => audio.muted = this.muted);
+    }
+
+    resetAudio(audio) {
+        try {
+            audio.currentTime = 0;
+        } catch {
+            return;
+        }
     }
 }
