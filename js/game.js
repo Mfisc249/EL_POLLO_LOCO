@@ -2,6 +2,23 @@ let canvas;
 let keyboard;
 let world;
 let soundManager;
+let resultAnimationInterval;
+
+const RESULT_IMAGES = {
+    won: [
+        'img/You won, you lost/You Won B.png',
+        'img/You won, you lost/You Win A.png',
+        'img/You won, you lost/You win B.png',
+        'img/You won, you lost/You won A.png',
+    ],
+    lost: [
+        'img/You won, you lost/Game Over.png',
+        'img/You won, you lost/Game over A.png',
+        'img/You won, you lost/You lost.png',
+        'img/You won, you lost/You lost b.png',
+        'img/9_intro_outro_screens/game_over/game over!.png',
+    ],
+};
 
 /**
  * Initializes canvas, controls and page actions.
@@ -46,24 +63,42 @@ function stopWorld() {
 }
 
 function hideOverlays() {
+    stopResultAnimation();
     document.getElementById('homeScreen').classList.add('hidden');
     document.getElementById('endScreen').classList.add('hidden');
 }
 
 function showEndScreen(result) {
     soundManager.stopMusic();
-    setResultImage(result);
+    startResultAnimation(result);
     document.getElementById('endScreen').classList.remove('hidden');
 }
 
-function setResultImage(result) {
+function startResultAnimation(result) {
+    stopResultAnimation();
+    const images = RESULT_IMAGES[result];
+    let index = 0;
+    showResultFrame(images, index, result);
+    resultAnimationInterval = setInterval(() => {
+        index = (index + 1) % images.length;
+        showResultFrame(images, index, result);
+    }, 850);
+}
+
+function showResultFrame(images, index, result) {
     const image = document.getElementById('resultImage');
-    image.src = result === 'won' ? 'img/You won, you lost/You Won B.png' : 'img/You won, you lost/Game Over.png';
+    image.src = images[index];
     image.alt = result === 'won' ? 'You won' : 'Game over';
+}
+
+function stopResultAnimation() {
+    clearInterval(resultAnimationInterval);
+    resultAnimationInterval = null;
 }
 
 function showHomeScreen() {
     stopWorld();
+    stopResultAnimation();
     document.body.classList.remove('is-playing');
     document.getElementById('homeScreen').classList.remove('hidden');
     document.getElementById('endScreen').classList.add('hidden');
