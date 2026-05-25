@@ -6,17 +6,12 @@ let resultAnimationInterval;
 
 const RESULT_IMAGES = {
     won: [
-        'img/You won, you lost/You Won B.png',
         'img/You won, you lost/You Win A.png',
-        'img/You won, you lost/You win B.png',
-        'img/You won, you lost/You won A.png',
+        'img/You won, you lost/Game over A.png',
     ],
     lost: [
-        'img/You won, you lost/Game Over.png',
-        'img/You won, you lost/Game over A.png',
         'img/You won, you lost/You lost.png',
-        'img/You won, you lost/You lost b.png',
-        'img/9_intro_outro_screens/game_over/game over!.png',
+        'img/You won, you lost/Game Over.png',
     ],
 };
 
@@ -80,8 +75,9 @@ function startResultAnimation(result) {
     let index = 0;
     showResultFrame(images, index, result);
     resultAnimationInterval = setInterval(() => {
-        index = (index + 1) % images.length;
+        index++;
         showResultFrame(images, index, result);
+        if (index === images.length - 1) stopResultAnimation();
     }, 850);
 }
 
