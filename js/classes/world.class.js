@@ -7,6 +7,8 @@ class World {
     lastThrowAt = 0;
     state = 'playing';
     endResult = '';
+    endStartedAt = 0;
+    endDelay = 1900;
 
     constructor(canvas, keyboard, soundManager = null, onFinish = null) {
         this.canvas = canvas;
@@ -34,10 +36,11 @@ class World {
     }
 
     run() {
-        if (this.state !== 'playing') return;
+        if (this.state === 'ended') return;
         this.frame++;
-        this.update();
+        this.state === 'playing' ? this.update() : this.updateEnding();
         this.draw();
+        if (this.shouldCompleteGame()) return this.completeGame();
         this.animationFrame = requestAnimationFrame(() => this.run());
     }
 
@@ -71,6 +74,15 @@ class World {
         this.throwableObjects = this.throwableObjects.filter((bottle) => {
             return !bottle.isFinished(this.level.levelEndX);
         });
+    }
+
+    updateEnding() {
+        this.updateBackgrounds();
+        this.level.enemies.forEach((enemy) => enemy.update(this.frame));
+        this.character.update(this.keyboard, this.level.levelEndX, this.frame);
+        this.level.endboss.update(this.frame, this.character.x);
+        this.updateThrowableObjects();
+        this.updateStatusBars();
     }
 
     setCamera() {
@@ -213,12 +225,11 @@ class World {
     }
 
     finishGame(result) {
-        if (this.state === 'ended') return;
-        this.state = 'ended';
+        if (this.state !== 'playing') return;
+        this.state = 'ending';
         this.endResult = result;
+        this.endStartedAt = Date.now();
         this.playEndSound(result);
-        this.draw();
-        if (this.onFinish) setTimeout(() => this.onFinish(result), 700);
     }
 
     drawEndMessage() {
@@ -246,5 +257,15 @@ class World {
 
     playSound(methodName) {
         if (this.soundManager) this.soundManager[methodName]();
+    }
+
+    shouldCompleteGame() {
+        return this.state === 'ending' && Date.now() - this.endStartedAt > this.endDelay;
+    }
+
+    completeGame() {
+        this.state = 'ended';
+        this.draw();
+        if (this.onFinish) this.onFinish(this.endResult);
     }
 }

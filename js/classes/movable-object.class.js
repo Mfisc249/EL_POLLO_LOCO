@@ -6,6 +6,7 @@ class MovableObject extends DrawableObject {
     lastHit = 0;
     groundY = 170;
     isKilled = false;
+    lastAnimationKey = '';
 
     /**
      * Moves this object to the right.
@@ -51,11 +52,29 @@ class MovableObject extends DrawableObject {
      * @param {number} frame Current world frame.
      * @param {number} speed Animation speed in frames.
      */
-    playAnimation(images, frame, speed = 8) {
+    playAnimation(images, frame, speed = 8, key = images[0]) {
+        this.startAnimation(images, key);
         if (frame % speed !== 0) return;
         const index = this.currentImage % images.length;
         this.img = this.imageCache[images[index]];
         this.currentImage++;
+    }
+
+    /**
+     * Plays an animation once and keeps the last frame visible.
+     * @param {string[]} images Animation image paths.
+     * @param {number} frame Current world frame.
+     * @param {number} speed Animation speed in frames.
+     * @param {string} key Animation state key.
+     * @returns {boolean}
+     */
+    playAnimationOnce(images, frame, speed = 8, key = images[0]) {
+        this.startAnimation(images, key);
+        if (frame % speed !== 0) return this.animationEnded(images);
+        const index = Math.min(this.currentImage, images.length - 1);
+        this.img = this.imageCache[images[index]];
+        if (this.currentImage < images.length) this.currentImage++;
+        return this.animationEnded(images);
     }
 
     /**
@@ -112,5 +131,16 @@ class MovableObject extends DrawableObject {
         if (this.y <= this.groundY) return;
         this.y = this.groundY;
         this.speedY = 0;
+    }
+
+    startAnimation(images, key) {
+        if (this.lastAnimationKey === key) return;
+        this.lastAnimationKey = key;
+        this.currentImage = 0;
+        this.img = this.imageCache[images[0]];
+    }
+
+    animationEnded(images) {
+        return this.currentImage > images.length - 1;
     }
 }

@@ -156,17 +156,24 @@ class Character extends MovableObject {
     }
 
     animate(keyboard, frame) {
-        if (this.isDead()) return this.playAnimation(CHARACTER_IMAGES_DEAD, frame, 8);
-        if (this.isHurt()) return this.playAnimation(CHARACTER_IMAGES_HURT, frame, 7);
-        if (this.isAboveGround()) return this.playAnimation(CHARACTER_IMAGES_JUMPING, frame, 5);
-        if (keyboard.RIGHT || keyboard.LEFT) return this.playAnimation(CHARACTER_IMAGES_WALKING, frame, 5);
+        if (this.isDead()) return this.playAnimationOnce(CHARACTER_IMAGES_DEAD, frame, 8, 'character-dead');
+        if (this.isHurt()) return this.playAnimation(CHARACTER_IMAGES_HURT, frame, 6, 'character-hurt');
+        if (this.isAboveGround()) return this.playJumpAnimation(frame);
+        if (keyboard.RIGHT || keyboard.LEFT) return this.playAnimation(CHARACTER_IMAGES_WALKING, frame, 5, 'character-walk');
         this.animateIdle(frame);
+    }
+
+    playJumpAnimation(frame) {
+        this.lastAnimationKey = 'character-jump';
+        const progress = this.speedY > 7 ? 0 : this.speedY > 0 ? 2 : this.speedY > -8 ? 5 : 7;
+        this.img = this.imageCache[CHARACTER_IMAGES_JUMPING[progress]];
+        if (frame % 9 === 0) this.currentImage = progress;
     }
 
     animateIdle(frame) {
         if (Date.now() - this.lastActionAt > 15000) {
-            return this.playAnimation(CHARACTER_IMAGES_SLEEP, frame, 12);
+            return this.playAnimation(CHARACTER_IMAGES_SLEEP, frame, 12, 'character-sleep');
         }
-        this.playAnimation(CHARACTER_IMAGES_IDLE, frame, 12);
+        this.playAnimation(CHARACTER_IMAGES_IDLE, frame, 12, 'character-idle');
     }
 }

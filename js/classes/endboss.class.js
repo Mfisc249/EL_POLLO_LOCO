@@ -22,6 +22,17 @@ const ENDBOSS_IMAGES_HURT = [
     'img/4_enemie_boss_chicken/4_hurt/G23.png',
 ];
 
+const ENDBOSS_IMAGES_ATTACK = [
+    'img/4_enemie_boss_chicken/3_attack/G13.png',
+    'img/4_enemie_boss_chicken/3_attack/G14.png',
+    'img/4_enemie_boss_chicken/3_attack/G15.png',
+    'img/4_enemie_boss_chicken/3_attack/G16.png',
+    'img/4_enemie_boss_chicken/3_attack/G17.png',
+    'img/4_enemie_boss_chicken/3_attack/G18.png',
+    'img/4_enemie_boss_chicken/3_attack/G19.png',
+    'img/4_enemie_boss_chicken/3_attack/G20.png',
+];
+
 const ENDBOSS_IMAGES_DEAD = [
     'img/4_enemie_boss_chicken/5_dead/G24.png',
     'img/4_enemie_boss_chicken/5_dead/G25.png',
@@ -44,10 +55,10 @@ class Endboss extends MovableObject {
      * @param {number} characterX Character x-position.
      */
     update(frame, characterX) {
-        if (this.isDead()) return this.playAnimation(ENDBOSS_IMAGES_DEAD, frame, 10);
-        if (this.isHurt()) return this.playAnimation(ENDBOSS_IMAGES_HURT, frame, 7);
+        if (this.isDead()) return this.playAnimationOnce(ENDBOSS_IMAGES_DEAD, frame, 10, 'endboss-dead');
+        if (this.isHurt()) return this.playAnimation(ENDBOSS_IMAGES_HURT, frame, 6, 'endboss-hurt');
         this.moveWhenClose(characterX);
-        this.playAnimation(this.activeImages(characterX), frame, 9);
+        this.playAnimation(this.activeImages(characterX), frame, this.animationSpeed(characterX), this.animationKey(characterX));
     }
 
     /**
@@ -72,6 +83,7 @@ class Endboss extends MovableObject {
         this.loadImages(ENDBOSS_IMAGES_WALKING);
         this.loadImages(ENDBOSS_IMAGES_ALERT);
         this.loadImages(ENDBOSS_IMAGES_HURT);
+        this.loadImages(ENDBOSS_IMAGES_ATTACK);
         this.loadImages(ENDBOSS_IMAGES_DEAD);
     }
 
@@ -80,6 +92,20 @@ class Endboss extends MovableObject {
     }
 
     activeImages(characterX) {
+        if (this.isAttacking(characterX)) return ENDBOSS_IMAGES_ATTACK;
         return this.x - characterX < 650 ? ENDBOSS_IMAGES_ALERT : ENDBOSS_IMAGES_WALKING;
+    }
+
+    animationKey(characterX) {
+        if (this.isAttacking(characterX)) return 'endboss-attack';
+        return this.x - characterX < 650 ? 'endboss-alert' : 'endboss-walk';
+    }
+
+    animationSpeed(characterX) {
+        return this.isAttacking(characterX) ? 6 : 9;
+    }
+
+    isAttacking(characterX) {
+        return this.x - characterX < 360;
     }
 }
