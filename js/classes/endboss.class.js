@@ -43,6 +43,7 @@ class Endboss extends MovableObject {
     speed = 1.6;
     damage = 25;
 
+    /** Creates the endboss and preloads its animations. */
     constructor() {
         super();
         this.setEndbossSize();
@@ -70,6 +71,7 @@ class Endboss extends MovableObject {
         this.lastHit = Date.now();
     }
 
+    /** Sets endboss size and collision offset. */
     setEndbossSize() {
         this.x = 2550;
         this.y = 130;
@@ -78,6 +80,7 @@ class Endboss extends MovableObject {
         this.offset = { top: 45, right: 35, bottom: 10, left: 45 };
     }
 
+    /** Loads all endboss animation frames. */
     loadEndbossImages() {
         this.loadImage(ENDBOSS_IMAGES_WALKING[0]);
         this.loadImages(ENDBOSS_IMAGES_WALKING);
@@ -87,24 +90,48 @@ class Endboss extends MovableObject {
         this.loadImages(ENDBOSS_IMAGES_DEAD);
     }
 
+    /**
+     * Moves the endboss toward Pepe when he is close.
+     * @param {number} characterX Pepe's x-position.
+     */
     moveWhenClose(characterX) {
         if (this.x - characterX < 520 && this.x > 2100) this.moveLeft(2100);
     }
 
+    /**
+     * Returns the active endboss animation image set.
+     * @param {number} characterX Pepe's x-position.
+     * @returns {string[]}
+     */
     activeImages(characterX) {
         if (this.isAttacking(characterX)) return ENDBOSS_IMAGES_ATTACK;
         return this.x - characterX < 650 ? ENDBOSS_IMAGES_ALERT : ENDBOSS_IMAGES_WALKING;
     }
 
+    /**
+     * Returns the current animation state key.
+     * @param {number} characterX Pepe's x-position.
+     * @returns {string}
+     */
     animationKey(characterX) {
         if (this.isAttacking(characterX)) return 'endboss-attack';
         return this.x - characterX < 650 ? 'endboss-alert' : 'endboss-walk';
     }
 
+    /**
+     * Returns the current animation speed.
+     * @param {number} characterX Pepe's x-position.
+     * @returns {number}
+     */
     animationSpeed(characterX) {
         return this.isAttacking(characterX) ? 6 : 9;
     }
 
+    /**
+     * Checks if Pepe is within attack range.
+     * @param {number} characterX Pepe's x-position.
+     * @returns {boolean}
+     */
     isAttacking(characterX) {
         return this.x - characterX < 360;
     }

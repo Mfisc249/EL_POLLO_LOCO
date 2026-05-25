@@ -43,16 +43,28 @@ class DrawableObject {
         return this.y + this.height - this.offset.bottom;
     }
 
+    /**
+     * Adds one image path to the cache.
+     * @param {string} path Image file path.
+     */
     cacheImage(path) {
         const image = new Image();
         image.src = path;
         this.imageCache[path] = image;
     }
 
+    /**
+     * Draws the object without mirroring.
+     * @param {CanvasRenderingContext2D} ctx Canvas context.
+     */
     drawNormal(ctx) {
         ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
     }
 
+    /**
+     * Draws the object mirrored on the x-axis.
+     * @param {CanvasRenderingContext2D} ctx Canvas context.
+     */
     drawMirrored(ctx) {
         ctx.save();
         ctx.translate(this.x + this.width, this.y);

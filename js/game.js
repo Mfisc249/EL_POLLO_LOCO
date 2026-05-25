@@ -27,6 +27,7 @@ function init() {
     updateMuteButton();
 }
 
+/** Binds all page button actions. */
 function bindPageActions() {
     addClick('startButton', startGame);
     addClick('restartButton', startGame);
@@ -38,10 +39,16 @@ function bindPageActions() {
     document.getElementById('helpDialog').addEventListener('click', closeDialogOnBackdrop);
 }
 
+/**
+ * Adds a click handler to one element.
+ * @param {string} id Element id.
+ * @param {Function} handler Click handler.
+ */
 function addClick(id, handler) {
     document.getElementById(id).addEventListener('click', handler);
 }
 
+/** Starts a new game session. */
 function startGame() {
     stopWorld();
     keyboard.reset();
@@ -52,23 +59,33 @@ function startGame() {
     document.body.classList.add('is-playing');
 }
 
+/** Stops the active game world and music. */
 function stopWorld() {
     if (world) world.stop();
     soundManager.stopMusic();
 }
 
+/** Hides all overlay screens. */
 function hideOverlays() {
     stopResultAnimation();
     document.getElementById('homeScreen').classList.add('hidden');
     document.getElementById('endScreen').classList.add('hidden');
 }
 
+/**
+ * Shows the final end screen.
+ * @param {string} result Final result key.
+ */
 function showEndScreen(result) {
     soundManager.stopMusic();
     startResultAnimation(result);
     document.getElementById('endScreen').classList.remove('hidden');
 }
 
+/**
+ * Starts the final image sequence.
+ * @param {string} result Final result key.
+ */
 function startResultAnimation(result) {
     stopResultAnimation();
     const images = RESULT_IMAGES[result];
@@ -81,17 +98,25 @@ function startResultAnimation(result) {
     }, 850);
 }
 
+/**
+ * Shows one final result image.
+ * @param {string[]} images Result image paths.
+ * @param {number} index Image index.
+ * @param {string} result Final result key.
+ */
 function showResultFrame(images, index, result) {
     const image = document.getElementById('resultImage');
     image.src = images[index];
     image.alt = result === 'won' ? 'You won' : 'Game over';
 }
 
+/** Stops the final image sequence. */
 function stopResultAnimation() {
     clearInterval(resultAnimationInterval);
     resultAnimationInterval = null;
 }
 
+/** Returns from the game to the home screen. */
 function showHomeScreen() {
     stopWorld();
     stopResultAnimation();
@@ -100,26 +125,34 @@ function showHomeScreen() {
     document.getElementById('endScreen').classList.add('hidden');
 }
 
+/** Opens the help dialog. */
 function openHelpDialog() {
     const dialog = document.getElementById('helpDialog');
     dialog.showModal ? dialog.showModal() : dialog.setAttribute('open', '');
 }
 
+/** Closes the help dialog. */
 function closeHelpDialog() {
     const dialog = document.getElementById('helpDialog');
     dialog.close ? dialog.close() : dialog.removeAttribute('open');
 }
 
+/**
+ * Closes the dialog when the backdrop is clicked.
+ * @param {MouseEvent} event Click event.
+ */
 function closeDialogOnBackdrop(event) {
     if (event.target.id === 'helpDialog') closeHelpDialog();
 }
 
+/** Toggles fullscreen mode for the game shell. */
 function toggleFullscreen() {
     const shell = document.getElementById('gameShell');
     const action = document.fullscreenElement ? document.exitFullscreen() : shell.requestFullscreen();
     if (action) action.catch(() => {});
 }
 
+/** Toggles global sound mute. */
 function toggleMute() {
     soundManager.toggleMute();
     updateMuteButton();
@@ -128,6 +161,7 @@ function toggleMute() {
     }
 }
 
+/** Updates the mute button label. */
 function updateMuteButton() {
     const button = document.getElementById('muteButton');
     const label = button.querySelector('.button-label') || button;

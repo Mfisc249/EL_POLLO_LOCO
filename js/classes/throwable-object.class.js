@@ -20,6 +20,12 @@ class ThrowableObject extends MovableObject {
     splashed = false;
     splashStartedAt = 0;
 
+    /**
+     * Creates a flying bottle.
+     * @param {number} x Horizontal world position.
+     * @param {number} y Vertical world position.
+     * @param {number} direction Flight direction.
+     */
     constructor(x, y, direction) {
         super();
         this.x = x;
@@ -39,6 +45,7 @@ class ThrowableObject extends MovableObject {
         this.playAnimation(BOTTLE_ROTATION_IMAGES, frame, 4);
     }
 
+    /** Starts the splash animation. */
     splash() {
         if (this.splashed) return;
         this.splashed = true;
@@ -46,6 +53,11 @@ class ThrowableObject extends MovableObject {
         this.currentImage = 0;
     }
 
+    /**
+     * Checks whether this bottle can be removed.
+     * @param {number} levelEndX Last world x-position.
+     * @returns {boolean}
+     */
     isFinished(levelEndX) {
         return this.y > 480
             || this.x < -100
@@ -53,6 +65,7 @@ class ThrowableObject extends MovableObject {
             || this.splashAnimationEnded();
     }
 
+    /** Sets bottle size, force and collision offset. */
     setBottleSize() {
         this.width = 70;
         this.height = 70;
@@ -60,18 +73,24 @@ class ThrowableObject extends MovableObject {
         this.offset = { top: 12, right: 12, bottom: 12, left: 12 };
     }
 
+    /** Loads bottle rotation and splash frames. */
     loadBottleImages() {
         this.loadImage(BOTTLE_ROTATION_IMAGES[0]);
         this.loadImages(BOTTLE_ROTATION_IMAGES);
         this.loadImages(BOTTLE_SPLASH_IMAGES);
     }
 
+    /** Moves the bottle along its throw arc. */
     fly() {
         this.x += this.speed * this.direction;
         this.y -= this.speedY;
         this.speedY -= this.acceleration;
     }
 
+    /**
+     * Checks whether the splash animation has ended.
+     * @returns {boolean}
+     */
     splashAnimationEnded() {
         return this.splashed && Date.now() - this.splashStartedAt > 260;
     }

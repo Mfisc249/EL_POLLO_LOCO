@@ -1,6 +1,7 @@
 class Level {
     levelEndX = 2880;
 
+    /** Creates all objects for level one. */
     constructor() {
         this.backgrounds = this.createBackgrounds();
         this.enemies = this.createEnemies();
@@ -9,12 +10,22 @@ class Level {
         this.endboss = new Endboss();
     }
 
+    /**
+     * Creates all background sections.
+     * @returns {DrawableObject[]}
+     */
     createBackgrounds() {
         return [0, 720, 1440, 2160, 2880].flatMap((x, index) => {
             return this.createBackgroundSection(x, (index % 2) + 1);
         });
     }
 
+    /**
+     * Creates one layered background section.
+     * @param {number} x Horizontal world position.
+     * @param {number} imageNumber Background variant number.
+     * @returns {DrawableObject[]}
+     */
     createBackgroundSection(x, imageNumber) {
         const layerBasePath = 'img/5_background/layers';
         return [
@@ -26,6 +37,10 @@ class Level {
         ];
     }
 
+    /**
+     * Creates all regular enemies.
+     * @returns {Chicken[]}
+     */
     createEnemies() {
         return [
             new Chicken(650),
@@ -36,6 +51,10 @@ class Level {
         ];
     }
 
+    /**
+     * Creates all collectable coins.
+     * @returns {CollectableObject[]}
+     */
     createCoins() {
         return [
             new CollectableObject('coin', 420, 190),
@@ -46,6 +65,10 @@ class Level {
         ];
     }
 
+    /**
+     * Creates all collectable bottles.
+     * @returns {CollectableObject[]}
+     */
     createBottles() {
         return [
             new CollectableObject('bottle', 540, 345),

@@ -1,4 +1,9 @@
 class BackgroundObject extends DrawableObject {
+    /**
+     * Creates a static background layer.
+     * @param {string} imagePath Background image path.
+     * @param {number} x Horizontal world position.
+     */
     constructor(imagePath, x) {
         super();
         this.loadImage(imagePath);

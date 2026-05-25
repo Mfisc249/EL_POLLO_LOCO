@@ -87,52 +87,95 @@ class MovableObject extends DrawableObject {
         this.lastHit = Date.now();
     }
 
+    /**
+     * Checks whether the object is above ground.
+     * @returns {boolean}
+     */
     isAboveGround() {
         return this.y < this.groundY;
     }
 
+    /**
+     * Checks whether the object is falling.
+     * @returns {boolean}
+     */
     isFalling() {
         return this.speedY < 0;
     }
 
+    /**
+     * Starts a jump if the object is on the ground.
+     * @param {number} force Jump force.
+     */
     jump(force = 23) {
         if (!this.isAboveGround()) this.speedY = force;
     }
 
+    /** Bounces the object upward after stomping an enemy. */
     bounce() {
         this.speedY = 15;
     }
 
+    /**
+     * Checks whether the object is currently hurt.
+     * @returns {boolean}
+     */
     isHurt() {
         return Date.now() - this.lastHit < 850;
     }
 
+    /**
+     * Checks whether the object is dead or killed.
+     * @returns {boolean}
+     */
     isDead() {
         return this.energy <= 0 || this.isKilled;
     }
 
+    /**
+     * Returns the left collision edge.
+     * @returns {number}
+     */
     leftEdge() {
         return this.x + this.offset.left;
     }
 
+    /**
+     * Returns the right collision edge.
+     * @returns {number}
+     */
     rightEdge() {
         return this.x + this.width - this.offset.right;
     }
 
+    /**
+     * Returns the top collision edge.
+     * @returns {number}
+     */
     topEdge() {
         return this.y + this.offset.top;
     }
 
+    /**
+     * Returns the bottom collision edge.
+     * @returns {number}
+     */
     bottomEdge() {
         return this.y + this.height - this.offset.bottom;
     }
 
+    /** Places the object back on the ground after falling. */
     landOnGround() {
         if (this.y <= this.groundY) return;
         this.y = this.groundY;
         this.speedY = 0;
     }
 
+    /**
+     * Resets image index when the animation state changes.
+     * @param {string[]} images Animation image paths.
+     * @param {string} key Animation state key.
+     */
     startAnimation(images, key) {
         if (this.lastAnimationKey === key) return;
         this.lastAnimationKey = key;
@@ -140,6 +183,11 @@ class MovableObject extends DrawableObject {
         this.img = this.imageCache[images[0]];
     }
 
+    /**
+     * Checks if a one-shot animation reached its final frame.
+     * @param {string[]} images Animation image paths.
+     * @returns {boolean}
+     */
     animationEnded(images) {
         return this.currentImage > images.length - 1;
     }

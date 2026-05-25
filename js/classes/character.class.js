@@ -67,6 +67,7 @@ class Character extends MovableObject {
     bottles = 0;
     lastActionAt = Date.now();
 
+    /** Creates Pepe and preloads all character animations. */
     constructor() {
         super();
         this.setCharacterSize();
@@ -100,15 +101,21 @@ class Character extends MovableObject {
         this.bottles = Math.min(100, this.bottles + 20);
     }
 
+    /** Uses one collected bottle. */
     useBottle() {
         this.bottles = Math.max(0, this.bottles - 20);
         this.lastActionAt = Date.now();
     }
 
+    /**
+     * Checks whether Pepe can throw a bottle.
+     * @returns {boolean}
+     */
     canThrow() {
         return this.bottles > 0 && !this.isDead();
     }
 
+    /** Sets Pepe's drawing size and collision offset. */
     setCharacterSize() {
         this.x = 90;
         this.y = 170;
@@ -118,6 +125,7 @@ class Character extends MovableObject {
         this.offset = { top: 95, right: 35, bottom: 10, left: 35 };
     }
 
+    /** Loads all Pepe animation frames. */
     loadCharacterImages() {
         this.loadImages(CHARACTER_IMAGES_IDLE);
         this.loadImages(CHARACTER_IMAGES_SLEEP);
@@ -127,34 +135,55 @@ class Character extends MovableObject {
         this.loadImages(CHARACTER_IMAGES_DEAD);
     }
 
+    /**
+     * Handles horizontal movement and jumping.
+     * @param {Keyboard} keyboard Current keyboard state.
+     * @param {number} levelEndX Last world x-position.
+     */
     handleMovement(keyboard, levelEndX) {
         this.handleHorizontalMovement(keyboard, levelEndX);
         this.handleJump(keyboard);
     }
 
+    /**
+     * Handles left and right movement.
+     * @param {Keyboard} keyboard Current keyboard state.
+     * @param {number} levelEndX Last world x-position.
+     */
     handleHorizontalMovement(keyboard, levelEndX) {
         if (keyboard.RIGHT && this.x < levelEndX) this.walkRight();
         if (keyboard.LEFT && this.x > 0) this.walkLeft();
     }
 
+    /**
+     * Handles jump input.
+     * @param {Keyboard} keyboard Current keyboard state.
+     */
     handleJump(keyboard) {
         if (!keyboard.UP || this.isAboveGround()) return;
         this.jump();
         this.lastActionAt = Date.now();
     }
 
+    /** Moves Pepe to the right. */
     walkRight() {
         this.moveRight();
         this.otherDirection = false;
         this.lastActionAt = Date.now();
     }
 
+    /** Moves Pepe to the left. */
     walkLeft() {
         this.moveLeft(0);
         this.otherDirection = true;
         this.lastActionAt = Date.now();
     }
 
+    /**
+     * Chooses the correct Pepe animation.
+     * @param {Keyboard} keyboard Current keyboard state.
+     * @param {number} frame Current world frame.
+     */
     animate(keyboard, frame) {
         if (this.isDead()) return this.playAnimationOnce(CHARACTER_IMAGES_DEAD, frame, 8, 'character-dead');
         if (this.isHurt()) return this.playAnimation(CHARACTER_IMAGES_HURT, frame, 6, 'character-hurt');
@@ -163,6 +192,10 @@ class Character extends MovableObject {
         this.animateIdle(frame);
     }
 
+    /**
+     * Chooses a jump frame based on vertical speed.
+     * @param {number} frame Current world frame.
+     */
     playJumpAnimation(frame) {
         this.lastAnimationKey = 'character-jump';
         const progress = this.speedY > 7 ? 0 : this.speedY > 0 ? 2 : this.speedY > -8 ? 5 : 7;
@@ -170,6 +203,10 @@ class Character extends MovableObject {
         if (frame % 9 === 0) this.currentImage = progress;
     }
 
+    /**
+     * Plays idle or sleep animation.
+     * @param {number} frame Current world frame.
+     */
     animateIdle(frame) {
         if (Date.now() - this.lastActionAt > 15000) {
             return this.playAnimation(CHARACTER_IMAGES_SLEEP, frame, 12, 'character-sleep');
