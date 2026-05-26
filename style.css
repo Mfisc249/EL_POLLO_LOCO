@@ -353,6 +353,12 @@ button:hover {
     }
 }
 
+@media (min-width: 761px) {
+    .home-actions {
+        margin-top: clamp(48px, 7vh, 92px);
+    }
+}
+
 @media (max-width: 760px) {
     body {
         justify-content: flex-start;
