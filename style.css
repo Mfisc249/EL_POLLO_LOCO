@@ -355,7 +355,7 @@ button:hover {
 
 @media (min-width: 761px) {
     .home-actions {
-        margin-top: clamp(48px, 7vh, 92px);
+        margin-top: clamp(150px, 20vh, 190px);
     }
 }
 
