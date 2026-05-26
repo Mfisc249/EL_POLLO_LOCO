@@ -5,6 +5,12 @@
 }
 
 @font-face {
+    font-family: "Cabin Sketch";
+    src: url("fonts/CabinSketch-Bold.ttf") format("truetype");
+    font-display: swap;
+}
+
+@font-face {
     font-family: "Diplomata SC";
     src: url("fonts/DiplomataSC-Regular.ttf") format("truetype");
     font-display: swap;
@@ -18,14 +24,15 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: flex-start;
     min-height: 100vh;
     margin: 0;
     overflow: hidden;
-    background: #123032 url("img/background.png") center / cover no-repeat fixed;
+    background: #f5d36d url("img/menue/clean/back2.png") center / cover no-repeat fixed;
     color: #fff8d7;
     font-family: "Boogaloo", Arial, Helvetica, sans-serif;
-    gap: 14px;
-    justify-content: center;
+    gap: clamp(34px, 7vh, 88px);
+    padding: clamp(8px, 2vh, 22px) clamp(16px, 3vw, 36px) 64px;
 }
 
 h1,
@@ -34,37 +41,45 @@ p {
     margin-top: 0;
 }
 
-.page-title {
+.home-title {
     margin: 0;
     color: #f8df61;
-    font-family: "Diplomata SC", Georgia, serif;
-    font-size: 56px;
-    font-weight: 400;
-    line-height: 1;
+    font-family: "Cabin Sketch", Georgia, serif;
+    font-size: clamp(64px, 10.5vw, 148px);
+    font-weight: 700;
+    line-height: 0.88;
     text-align: center;
-    text-shadow: 0 5px 0 #7a2b17, 0 10px 24px rgba(0, 0, 0, 0.5);
+    text-shadow:
+        0 4px 0 #7a2b17,
+        0 10px 24px rgba(0, 0, 0, 0.45);
+    text-transform: uppercase;
 }
 
-.is-playing .page-title {
+.is-starting .home-title,
+.is-playing .home-title,
+.is-starting .home-actions,
+.is-playing .home-actions {
     display: none;
 }
 
 .game-shell {
     position: relative;
-    width: min(100vw, 960px, 128dvh);
+    display: none;
+    width: min(100vw - 24px, 960px, 150dvh);
     aspect-ratio: 3 / 2;
 }
 
+.is-starting .game-shell,
 .is-playing .game-shell {
-    width: min(100vw, 960px, 150dvh);
+    display: block;
 }
 
 canvas {
-    background-color: #000;
     display: block;
     width: 100%;
     height: 100%;
     border: 4px solid #5f341a;
+    background-color: #000;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
 }
 
@@ -100,15 +115,16 @@ button:hover {
 .home-screen {
     background-color: #123032;
     background-image:
-        linear-gradient(rgba(8, 20, 18, 0.38), rgba(8, 20, 18, 0.72)),
+        linear-gradient(rgba(8, 20, 18, 0.18), rgba(8, 20, 18, 0.34)),
         url("img/9_intro_outro_screens/start/startscreen_1.png");
     background-position: center, center 54%;
     background-repeat: no-repeat;
     background-size: cover, contain;
 }
 
-.screen-content {
-    width: min(700px, 94%);
+.home-actions {
+    width: min(1180px, 96vw);
+    text-align: center;
 }
 
 .button-row {
@@ -120,94 +136,99 @@ button:hover {
 
 .menu-buttons {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    align-items: end;
-    gap: 8px;
+    grid-template-columns: repeat(4, minmax(190px, 1fr));
+    gap: clamp(16px, 2.4vw, 36px);
     width: 100%;
 }
 
 .menu-button {
     position: relative;
-    width: 100%;
     min-width: 0;
     min-height: 0;
-    aspect-ratio: var(--sign-ratio);
-    border: 0;
+    height: clamp(250px, 24vw, 350px);
     border-radius: 0;
-    background-color: transparent;
-    background-image: var(--sign);
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: contain;
-    filter: drop-shadow(0 12px 12px rgba(0, 0, 0, 0.15));
+    background: transparent;
+    filter: drop-shadow(0 12px 14px rgba(0, 0, 0, 0.26));
     padding: 0;
 }
 
 .menu-button:hover,
 .menu-button:focus-visible {
-    background-color: transparent;
-    filter: drop-shadow(0 16px 14px rgba(0, 0, 0, 0.45));
-    transform: translateY(-5px);
+    background: transparent;
+    filter: drop-shadow(0 18px 18px rgba(0, 0, 0, 0.42));
+    transform: translateY(-6px);
 }
 
 .menu-button:active {
-    transform: translateY(-1px);
+    transform: translateY(-2px);
+}
+
+.menu-button-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    pointer-events: none;
 }
 
 .button-label {
     position: absolute;
-    top: var(--label-top);
-    right: var(--label-right, 12%);
-    left: var(--label-left, 12%);
+    right: var(--label-right, 18%);
+    bottom: var(--label-bottom, 15%);
+    left: var(--label-left, 18%);
     transform: translateY(-50%);
-    color: #74280f;
+    color: #fff8d7;
     font-family: "Diplomata SC", Georgia, serif;
-    font-size: var(--label-size, clamp(8px, 1.45vw, 14px));
+    font-size: clamp(17px, 1.75vw, 30px);
     line-height: 1.05;
-    overflow-wrap: normal;
     text-align: center;
-    text-shadow: 0 2px 0 rgba(255, 214, 111, 0.55);
+    text-shadow:
+        0 2px 0 #4b090d,
+        0 4px 8px rgba(0, 0, 0, 0.35);
     white-space: nowrap;
 }
 
-.sign-skull {
-    --sign: url("img/el_pollo_loco_schilder_png/schild_1_totenkopf.png");
-    --sign-ratio: 599 / 1379;
-    --label-left: 20%;
-    --label-right: 3%;
-    --label-top: 48%;
+.menu-fullscreen .button-label,
+.menu-sound .button-label {
+    font-size: clamp(14px, 1.45vw, 24px);
 }
 
-.sign-meadow {
-    --sign: url("img/el_pollo_loco_schilder_png/schild_2_wiese.png");
-    --sign-ratio: 675 / 1182;
-    --label-left: 21%;
+.menu-start {
+    --label-bottom: 18%;
+    --label-left: 19%;
+    --label-right: 19%;
+}
+
+.menu-help {
+    --label-bottom: 15%;
+    --label-left: 18%;
+    --label-right: 18%;
+}
+
+.menu-fullscreen {
+    --label-bottom: 16%;
+    --label-left: 16%;
+    --label-right: 16%;
+}
+
+.menu-sound {
+    --label-bottom: 9%;
+    --label-left: 17%;
     --label-right: 17%;
-    --label-top: 35%;
-}
-
-.sign-snake {
-    --sign: url("img/el_pollo_loco_schilder_png/schild_3_schlange.png");
-    --sign-ratio: 577 / 1175;
-    --label-left: 5%;
-    --label-right: 14%;
-    --label-size: clamp(7px, 1.25vw, 12px);
-    --label-top: 43%;
-}
-
-.sign-hat {
-    --sign: url("img/el_pollo_loco_schilder_png/schild_4_cowboyhut.png");
-    --sign-ratio: 781 / 1232;
-    --label-left: 23%;
-    --label-right: 10%;
-    --label-size: clamp(7px, 1.25vw, 12px);
-    --label-top: 30%;
 }
 
 .legal-link {
-    display: inline-block;
-    margin-top: 20px;
-    color: #fff8d7;
+    position: fixed;
+    right: 0;
+    bottom: clamp(10px, 2vh, 20px);
+    left: 0;
+    z-index: 2;
+    display: block;
+    width: max-content;
+    margin: 0 auto;
+    color: #7d230e;
+    font-size: 18px;
+    text-shadow: 0 1px 0 #fff8d7;
 }
 
 .hidden {
@@ -300,30 +321,34 @@ button:hover {
     padding: 32px;
 }
 
+@media (max-width: 760px) {
+    body {
+        justify-content: flex-start;
+        overflow: auto;
+        padding-bottom: 64px;
+    }
+
+    .home-title {
+        font-size: clamp(52px, 16vw, 92px);
+    }
+
+    .menu-buttons {
+        grid-template-columns: repeat(2, minmax(130px, 1fr));
+    }
+
+    .menu-button {
+        height: clamp(200px, 46vw, 280px);
+    }
+}
+
 @media (max-width: 900px), (hover: none) {
-    .mobile-controls {
+    .is-playing .mobile-controls {
         display: flex;
     }
 
     .game-shell {
-        width: min(100vw, 128dvh);
-        max-width: none;
-    }
-
-    .is-playing .game-shell {
         width: min(100vw, 150dvh);
-    }
-
-    .page-title {
-        font-size: 32px;
-    }
-
-    .menu-buttons {
-        gap: 4px;
-    }
-
-    .button-label {
-        font-size: clamp(9px, 2.5vw, 15px);
+        max-width: none;
     }
 
     canvas {
@@ -332,7 +357,8 @@ button:hover {
 }
 
 @media (orientation: portrait) and (max-width: 900px) {
-    .orientation-message {
+    .is-playing .orientation-message,
+    .is-starting .orientation-message {
         display: grid;
     }
 }

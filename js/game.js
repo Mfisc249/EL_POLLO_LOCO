@@ -3,6 +3,9 @@ let keyboard;
 let world;
 let soundManager;
 let resultAnimationInterval;
+let startDelayTimeout;
+
+const START_SCREEN_DELAY = 1000;
 
 const RESULT_IMAGES = {
     won: [
@@ -50,12 +53,30 @@ function addClick(id, handler) {
 
 /** Starts a new game session. */
 function startGame() {
+    clearStartDelay();
     stopWorld();
     keyboard.reset();
+    showStartScreen();
+    startDelayTimeout = setTimeout(runGame, START_SCREEN_DELAY);
+}
+
+/** Shows the canvas and intro screen before the world starts. */
+function showStartScreen() {
+    stopResultAnimation();
+    document.body.classList.remove('is-playing');
+    document.body.classList.add('is-starting');
+    document.getElementById('homeScreen').classList.remove('hidden');
+    document.getElementById('endScreen').classList.add('hidden');
+}
+
+/** Starts the actual playable world after the intro screen. */
+function runGame() {
+    clearStartDelay();
     hideOverlays();
     world = new World(canvas, keyboard, soundManager, showEndScreen);
     world.start();
     soundManager.startMusic();
+    document.body.classList.remove('is-starting');
     document.body.classList.add('is-playing');
 }
 
@@ -63,6 +84,12 @@ function startGame() {
 function stopWorld() {
     if (world) world.stop();
     soundManager.stopMusic();
+}
+
+/** Clears a pending delayed game start. */
+function clearStartDelay() {
+    clearTimeout(startDelayTimeout);
+    startDelayTimeout = null;
 }
 
 /** Hides all overlay screens. */
@@ -118,9 +145,10 @@ function stopResultAnimation() {
 
 /** Returns from the game to the home screen. */
 function showHomeScreen() {
+    clearStartDelay();
     stopWorld();
     stopResultAnimation();
-    document.body.classList.remove('is-playing');
+    document.body.classList.remove('is-playing', 'is-starting');
     document.getElementById('homeScreen').classList.remove('hidden');
     document.getElementById('endScreen').classList.add('hidden');
 }
@@ -148,7 +176,8 @@ function closeDialogOnBackdrop(event) {
 /** Toggles fullscreen mode for the game shell. */
 function toggleFullscreen() {
     const shell = document.getElementById('gameShell');
-    const action = document.fullscreenElement ? document.exitFullscreen() : shell.requestFullscreen();
+    const target = document.body.classList.contains('is-playing') ? shell : document.documentElement;
+    const action = document.fullscreenElement ? document.exitFullscreen() : target.requestFullscreen();
     if (action) action.catch(() => {});
 }
 

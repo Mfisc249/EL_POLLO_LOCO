@@ -23,29 +23,12 @@
 
 </head>
 <body onload="init()">
-    <h1 class="page-title">El Pollo Loco</h1>
+    <h1 class="home-title">El Pollo Loco</h1>
 
     <main id="gameShell" class="game-shell">
         <canvas id="gameCanvas" width="720" height="480"></canvas>
 
         <section id="homeScreen" class="screen home-screen">
-            <div class="screen-content">
-                <div class="button-row menu-buttons">
-                    <button id="startButton" class="menu-button sign-skull" type="button">
-                        <span class="button-label">Start</span>
-                    </button>
-                    <button id="helpButton" class="menu-button sign-meadow" type="button">
-                        <span class="button-label">Hilfe</span>
-                    </button>
-                    <button id="fullscreenButton" class="menu-button sign-snake" type="button">
-                        <span class="button-label">Vollbild</span>
-                    </button>
-                    <button id="muteButton" class="menu-button sign-hat" type="button" aria-pressed="false">
-                        <span class="button-label">Ton an</span>
-                    </button>
-                </div>
-                <a class="legal-link" href="impressum.html">Impressum</a>
-            </div>
         </section>
 
         <section id="endScreen" class="screen end-screen hidden">
@@ -67,6 +50,28 @@
             </div>
         </nav>
     </main>
+
+    <div class="home-actions">
+        <div class="button-row menu-buttons">
+            <button id="startButton" class="menu-button menu-start" type="button">
+                <img class="menu-button-image" src="img/menue/cropped/start.png" alt="">
+                <span class="button-label">Start</span>
+            </button>
+            <button id="helpButton" class="menu-button menu-help" type="button">
+                <img class="menu-button-image" src="img/menue/cropped/hilfe.png" alt="">
+                <span class="button-label">Hilfe</span>
+            </button>
+            <button id="fullscreenButton" class="menu-button menu-fullscreen" type="button">
+                <img class="menu-button-image" src="img/menue/cropped/vollbild.png" alt="">
+                <span class="button-label">Vollbild</span>
+            </button>
+            <button id="muteButton" class="menu-button menu-sound" type="button" aria-pressed="false">
+                <img class="menu-button-image" src="img/menue/cropped/ton.png" alt="">
+                <span class="button-label">Ton an</span>
+            </button>
+        </div>
+        <a class="legal-link" href="impressum.html">Impressum</a>
+    </div>
 
     <dialog id="helpDialog" class="help-dialog">
         <button id="closeHelpButton" class="close-button" type="button" aria-label="Schliessen">x</button>
