@@ -55,11 +55,20 @@ p {
     text-transform: uppercase;
 }
 
-.is-starting .home-title,
-.is-playing .home-title,
 .is-starting .home-actions,
 .is-playing .home-actions {
     display: none;
+}
+
+.is-starting,
+.is-playing {
+    justify-content: center;
+    gap: clamp(14px, 2.5vh, 28px);
+}
+
+.is-starting .home-title,
+.is-playing .home-title {
+    font-size: clamp(44px, 7vw, 96px);
 }
 
 .game-shell {
@@ -72,6 +81,7 @@ p {
 .is-starting .game-shell,
 .is-playing .game-shell {
     display: block;
+    width: min(100vw - 24px, 960px, calc((100dvh - 150px) * 1.5));
 }
 
 canvas {

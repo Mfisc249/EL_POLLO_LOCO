@@ -50,6 +50,16 @@
         line-height: 1;
     }
 
+    .is-starting .home-title,
+    .is-playing .home-title {
+        font-size: 42px;
+    }
+
+    .is-starting .game-shell,
+    .is-playing .game-shell {
+        width: min(100vw - 24px, calc((100dvh - 92px) * 1.5));
+    }
+
     .home-actions {
         margin-top: 0;
         width: min(760px, 96vw);
