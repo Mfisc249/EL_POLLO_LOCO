@@ -21,6 +21,7 @@ class SoundManager {
     muted = false;
     sounds = {};
     chickenSounds = [];
+    activeEffects = [];
 
     /** Creates the sound manager and preloads all audio files. */
     constructor() {
@@ -113,7 +114,7 @@ class SoundManager {
         this.muted = muted;
         localStorage.setItem('polloMuted', String(muted));
         this.updateMutedState();
-        if (muted) this.stopMusic();
+        if (muted) this.stopAllAudio();
     }
 
     /** Loads all effect sounds. */
@@ -155,11 +156,39 @@ class SoundManager {
      */
     playAudio(audio, reuse = false) {
         if (this.muted || !audio) return;
-        const sound = reuse ? audio : audio.cloneNode(true);
-        sound.volume = audio.volume;
-        sound.muted = this.muted;
-        const promise = sound.play();
+        if (reuse) return this.playPreparedAudio(audio);
+        const sound = audio.cloneNode(true);
+        this.trackEffect(sound, audio.volume);
+        this.playPreparedAudio(sound);
+    }
+
+    /**
+     * Plays a prepared audio element.
+     * @param {HTMLAudioElement} audio Audio element.
+     */
+    playPreparedAudio(audio) {
+        const promise = audio.play();
         if (promise) promise.catch(() => {});
+    }
+
+    /**
+     * Tracks one active effect sound.
+     * @param {HTMLAudioElement} sound Effect audio clone.
+     * @param {number} volume Audio volume.
+     */
+    trackEffect(sound, volume) {
+        sound.volume = volume;
+        sound.muted = this.muted;
+        this.activeEffects.push(sound);
+        sound.addEventListener('ended', () => this.removeEffect(sound), { once: true });
+    }
+
+    /**
+     * Removes one finished effect sound.
+     * @param {HTMLAudioElement} sound Effect audio clone.
+     */
+    removeEffect(sound) {
+        this.activeEffects = this.activeEffects.filter((audio) => audio !== sound);
     }
 
     /** Plays a random chicken sound. */
@@ -173,6 +202,28 @@ class SoundManager {
         this.music.muted = this.muted;
         Object.values(this.sounds).forEach((audio) => audio.muted = this.muted);
         this.chickenSounds.forEach((audio) => audio.muted = this.muted);
+        this.activeEffects.forEach((audio) => audio.muted = this.muted);
+    }
+
+    /** Stops music and active effect sounds. */
+    stopAllAudio() {
+        this.stopMusic();
+        this.stopEffects();
+    }
+
+    /** Stops all active effect sounds. */
+    stopEffects() {
+        this.activeEffects.forEach((audio) => this.stopAudio(audio));
+        this.activeEffects = [];
+    }
+
+    /**
+     * Stops one audio element safely.
+     * @param {HTMLAudioElement} audio Audio element.
+     */
+    stopAudio(audio) {
+        audio.pause();
+        this.resetAudio(audio);
     }
 
     /**
