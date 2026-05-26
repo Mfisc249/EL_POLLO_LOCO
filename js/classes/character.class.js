@@ -61,6 +61,9 @@ const CHARACTER_IMAGES_DEAD = [
     'img/2_character_pepe/5_dead/D-57.png',
 ];
 
+/**
+ * Represents Pepe, the playable character.
+ */
 class Character extends MovableObject {
     speed = 5.5;
     coins = 0;

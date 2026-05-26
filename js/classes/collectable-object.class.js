@@ -8,6 +8,9 @@ const BOTTLE_GROUND_IMAGES = [
     'img/6_salsa_bottle/2_salsa_bottle_on_ground.png',
 ];
 
+/**
+ * Represents collectable coins and bottles.
+ */
 class CollectableObject extends MovableObject {
     /**
      * Creates a collectable coin or bottle.

@@ -1,5 +1,8 @@
 const STATUS_VALUES = [0, 20, 40, 60, 80, 100];
 
+/**
+ * Displays one percentage-based status bar.
+ */
 class StatusBar extends DrawableObject {
     /**
      * Creates a status bar with an initial value.

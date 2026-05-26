@@ -1,3 +1,6 @@
+/**
+ * Base class for drawable objects with movement, physics and collisions.
+ */
 class MovableObject extends DrawableObject {
     speed = 0.15;
     speedY = 0;

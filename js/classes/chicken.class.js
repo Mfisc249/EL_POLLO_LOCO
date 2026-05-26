@@ -10,6 +10,9 @@ const SMALL_CHICKEN_IMAGES = [
     'img/3_enemies_chicken/chicken_small/1_walk/3_w.png',
 ];
 
+/**
+ * Represents a normal or small chicken enemy.
+ */
 class Chicken extends MovableObject {
     /**
      * Creates a normal or small chicken enemy.

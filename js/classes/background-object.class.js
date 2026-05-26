@@ -1,3 +1,6 @@
+/**
+ * Represents one static background layer in the world.
+ */
 class BackgroundObject extends DrawableObject {
     /**
      * Creates a static background layer.
@@ -14,6 +17,9 @@ class BackgroundObject extends DrawableObject {
     }
 }
 
+/**
+ * Represents a slowly moving cloud layer.
+ */
 class Cloud extends BackgroundObject {
     speed = 0.2;
 

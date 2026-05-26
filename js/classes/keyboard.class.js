@@ -9,6 +9,9 @@ const KEY_BINDINGS = {
     KeyF: 'THROW',
 };
 
+/**
+ * Stores keyboard and touch input states.
+ */
 class Keyboard {
     LEFT = false;
     RIGHT = false;

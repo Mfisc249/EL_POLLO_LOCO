@@ -17,6 +17,9 @@ const CHICKEN_CLUCKS = [
     ['audio/chicken_cluck_3.wav', 0.34],
 ];
 
+/**
+ * Manages music, sound effects and mute state.
+ */
 class SoundManager {
     muted = false;
     sounds = {};

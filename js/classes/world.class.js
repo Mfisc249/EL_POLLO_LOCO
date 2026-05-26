@@ -1,3 +1,6 @@
+/**
+ * Coordinates one playable game session.
+ */
 class World {
     character = new Character();
     cameraX = 0;

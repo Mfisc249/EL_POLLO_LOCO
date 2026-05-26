@@ -1,3 +1,6 @@
+/**
+ * Base class for objects that can load and draw images.
+ */
 class DrawableObject {
     x = 0;
     y = 0;

@@ -1,3 +1,6 @@
+/**
+ * Builds all objects for the first level.
+ */
 class Level {
     levelEndX = 2880;
 

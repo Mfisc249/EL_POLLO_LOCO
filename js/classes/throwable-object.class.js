@@ -14,6 +14,9 @@ const BOTTLE_SPLASH_IMAGES = [
     'img/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png',
 ];
 
+/**
+ * Represents a thrown salsa bottle.
+ */
 class ThrowableObject extends MovableObject {
     speed = 12;
     acceleration = 0.7;
