@@ -387,6 +387,33 @@ button:hover {
     }
 }
 
+@media (orientation: landscape) and (max-height: 520px) {
+    body:not(.legal-page) {
+        gap: 8px;
+        overflow: hidden;
+        padding: 12px 16px 28px;
+    }
+
+    .home-title {
+        font-size: 56px;
+        line-height: 1;
+    }
+
+    .home-actions {
+        margin-top: 0;
+        width: min(760px, 96vw);
+    }
+
+    .menu-buttons {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 6px;
+    }
+
+    .button-label {
+        font-size: 13px;
+    }
+}
+
 @media (max-width: 900px), (hover: none) {
     .is-playing .mobile-controls {
         display: flex;
@@ -403,8 +430,7 @@ button:hover {
 }
 
 @media (orientation: portrait) and (max-width: 900px) {
-    .is-playing .orientation-message,
-    .is-starting .orientation-message {
+    body:not(.legal-page) .orientation-message {
         display: grid;
     }
 }
