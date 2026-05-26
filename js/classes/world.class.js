@@ -92,7 +92,7 @@ class World {
     updateEnding() {
         this.updateBackgrounds();
         this.level.enemies.forEach((enemy) => enemy.update(this.frame));
-        this.character.update(this.keyboard, this.level.levelEndX, this.frame);
+        this.character.updateFrozen(this.frame);
         this.level.endboss.update(this.frame, this.character.x);
         this.updateThrowableObjects();
         this.updateStatusBars();

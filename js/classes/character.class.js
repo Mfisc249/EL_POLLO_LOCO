@@ -88,6 +88,15 @@ class Character extends MovableObject {
     }
 
     /**
+     * Updates animation while player input is frozen.
+     * @param {number} frame Current world frame.
+     */
+    updateFrozen(frame) {
+        this.applyGravity();
+        this.animate({}, frame);
+    }
+
+    /**
      * Adds one coin up to the visible statusbar limit.
      */
     collectCoin() {
