@@ -124,6 +124,7 @@ button:hover {
 
 .home-actions {
     width: min(1180px, 96vw);
+    margin-top: clamp(24px, 6vh, 86px);
     text-align: center;
 }
 
@@ -179,7 +180,7 @@ button:hover {
     transform: translateY(-50%);
     color: #fff8d7;
     font-family: "Diplomata SC", Georgia, serif;
-    font-size: clamp(17px, 1.75vw, 30px);
+    font-size: clamp(11px, 1.45vw, 24px);
     line-height: 1.05;
     text-align: center;
     text-shadow:
@@ -190,31 +191,35 @@ button:hover {
 
 .menu-fullscreen .button-label,
 .menu-sound .button-label {
-    font-size: clamp(14px, 1.45vw, 24px);
+    font-size: clamp(9px, 1.15vw, 20px);
 }
 
 .menu-start {
     --label-bottom: 18%;
     --label-left: 19%;
     --label-right: 19%;
+    margin-top: 60px;
 }
 
 .menu-help {
-    --label-bottom: 15%;
+    --label-bottom: 10%;
     --label-left: 18%;
-    --label-right: 18%;
+    --label-right: 1%;
+    margin-top: 46px;
 }
 
 .menu-fullscreen {
     --label-bottom: 16%;
-    --label-left: 16%;
+    --label-left: 10%;
     --label-right: 16%;
+    margin-top: 58px;
 }
 
 .menu-sound {
-    --label-bottom: 9%;
+    --label-bottom: -1%;
     --label-left: 17%;
     --label-right: 17%;
+    margin-top: 0;
 }
 
 .legal-link {
