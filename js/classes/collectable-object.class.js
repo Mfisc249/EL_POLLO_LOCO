@@ -3,6 +3,11 @@ const COIN_IMAGES = [
     'img/8_coin/coin_2.png',
 ];
 
+const BOTTLE_GROUND_IMAGES = [
+    'img/6_salsa_bottle/1_salsa_bottle_on_ground.png',
+    'img/6_salsa_bottle/2_salsa_bottle_on_ground.png',
+];
+
 class CollectableObject extends MovableObject {
     /**
      * Creates a collectable coin or bottle.
@@ -25,6 +30,7 @@ class CollectableObject extends MovableObject {
      */
     update(frame) {
         if (this.type === 'coin') this.playAnimation(COIN_IMAGES, frame, 14);
+        if (this.type === 'bottle') this.playAnimation(BOTTLE_GROUND_IMAGES, frame, 22);
     }
 
     /** Sets size and collision offset for this collectable. */
@@ -38,12 +44,18 @@ class CollectableObject extends MovableObject {
     /** Loads the matching collectable image set. */
     loadCollectableImages() {
         if (this.type === 'coin') return this.loadCoinImages();
-        this.loadImage('img/6_salsa_bottle/1_salsa_bottle_on_ground.png');
+        this.loadBottleImages();
     }
 
     /** Loads all coin animation images. */
     loadCoinImages() {
         this.loadImage(COIN_IMAGES[0]);
         this.loadImages(COIN_IMAGES);
+    }
+
+    /** Loads all bottle ground animation images. */
+    loadBottleImages() {
+        this.loadImage(BOTTLE_GROUND_IMAGES[0]);
+        this.loadImages(BOTTLE_GROUND_IMAGES);
     }
 }
