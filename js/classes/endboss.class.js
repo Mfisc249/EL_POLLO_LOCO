@@ -39,11 +39,15 @@ const ENDBOSS_IMAGES_DEAD = [
     'img/4_enemie_boss_chicken/5_dead/G26.png',
 ];
 
+const ENDBOSS_CHASE_DISTANCE = 620;
+const ENDBOSS_STOP_OFFSET = 35;
+const ENDBOSS_LEFT_LIMIT = 1900;
+
 /**
  * Represents the final boss enemy.
  */
 class Endboss extends MovableObject {
-    speed = 1.6;
+    speed = 1.9;
     damage = 25;
 
     /** Creates the endboss and preloads its animations. */
@@ -98,7 +102,10 @@ class Endboss extends MovableObject {
      * @param {number} characterX Pepe's x-position.
      */
     moveWhenClose(characterX) {
-        if (this.x - characterX < 520 && this.x > 2100) this.moveLeft(2100);
+        const stopX = Math.max(ENDBOSS_LEFT_LIMIT, characterX + ENDBOSS_STOP_OFFSET);
+        if (this.x - characterX < ENDBOSS_CHASE_DISTANCE && this.x > stopX) {
+            this.moveLeft(stopX);
+        }
     }
 
     /**

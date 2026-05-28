@@ -15,6 +15,14 @@ class BackgroundObject extends DrawableObject {
         this.width = 720;
         this.height = 480;
     }
+
+    /**
+     * Draws background layers with a small overlap to avoid moving seams.
+     * @param {CanvasRenderingContext2D} ctx Canvas context.
+     */
+    drawNormal(ctx) {
+        ctx.drawImage(this.img, Math.round(this.x), this.y, this.width + 1, this.height);
+    }
 }
 
 /**

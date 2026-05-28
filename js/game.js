@@ -10,7 +10,7 @@ const START_SCREEN_DELAY = 1000;
 const RESULT_IMAGES = {
     won: [
         'img/You won, you lost/You Win A.png',
-        'img/You won, you lost/Game over A.png',
+        'img/You won, you lost/You Won B.png',
     ],
     lost: [
         'img/You won, you lost/You lost.png',
@@ -28,6 +28,7 @@ function init() {
     soundManager = new SoundManager();
     bindPageActions();
     updateMuteButton();
+    updateFullscreenButtons();
 }
 
 /** Binds all page button actions. */
@@ -35,11 +36,15 @@ function bindPageActions() {
     addClick('startButton', startGame);
     addClick('restartButton', startGame);
     addClick('homeButton', showHomeScreen);
+    addClick('gameHomeButton', showHomeScreen);
     addClick('helpButton', openHelpDialog);
     addClick('closeHelpButton', closeHelpDialog);
     addClick('fullscreenButton', toggleFullscreen);
+    addClick('gameFullscreenButton', toggleFullscreen);
     addClick('muteButton', toggleMute);
+    addClick('gameMuteButton', toggleMute);
     document.getElementById('helpDialog').addEventListener('click', closeDialogOnBackdrop);
+    document.addEventListener('fullscreenchange', updateFullscreenButtons);
 }
 
 /**
@@ -48,7 +53,8 @@ function bindPageActions() {
  * @param {Function} handler Click handler.
  */
 function addClick(id, handler) {
-    document.getElementById(id).addEventListener('click', handler);
+    const element = document.getElementById(id);
+    if (element) element.addEventListener('click', handler);
 }
 
 /** Starts a new game session. */
@@ -63,7 +69,7 @@ function startGame() {
 /** Shows the canvas and intro screen before the world starts. */
 function showStartScreen() {
     stopResultAnimation();
-    document.body.classList.remove('is-playing');
+    document.body.classList.remove('is-playing', 'is-ended');
     document.body.classList.add('is-starting');
     document.getElementById('homeScreen').classList.remove('hidden');
     document.getElementById('endScreen').classList.add('hidden');
@@ -76,7 +82,7 @@ function runGame() {
     world = new World(canvas, keyboard, soundManager, showEndScreen);
     world.start();
     soundManager.startMusic();
-    document.body.classList.remove('is-starting');
+    document.body.classList.remove('is-starting', 'is-ended');
     document.body.classList.add('is-playing');
 }
 
@@ -105,7 +111,9 @@ function hideOverlays() {
  */
 function showEndScreen(result) {
     soundManager.stopMusic();
+    keyboard.reset();
     startResultAnimation(result);
+    document.body.classList.add('is-ended');
     document.getElementById('endScreen').classList.remove('hidden');
 }
 
@@ -133,8 +141,11 @@ function startResultAnimation(result) {
  */
 function showResultFrame(images, index, result) {
     const image = document.getElementById('resultImage');
+    image.classList.remove('is-swapping');
+    void image.offsetWidth;
     image.src = images[index];
     image.alt = result === 'won' ? 'You won' : 'Game over';
+    image.classList.add('is-swapping');
 }
 
 /** Stops the final image sequence. */
@@ -148,7 +159,7 @@ function showHomeScreen() {
     clearStartDelay();
     stopWorld();
     stopResultAnimation();
-    document.body.classList.remove('is-playing', 'is-starting');
+    document.body.classList.remove('is-playing', 'is-starting', 'is-ended');
     document.getElementById('homeScreen').classList.remove('hidden');
     document.getElementById('endScreen').classList.add('hidden');
 }
@@ -177,7 +188,9 @@ function closeDialogOnBackdrop(event) {
 function toggleFullscreen() {
     const shell = document.getElementById('gameShell');
     const target = document.body.classList.contains('is-playing') ? shell : document.documentElement;
-    const action = document.fullscreenElement ? document.exitFullscreen() : target.requestFullscreen();
+    const action = document.fullscreenElement
+        ? document.exitFullscreen()
+        : target.requestFullscreen && target.requestFullscreen();
     if (action) action.catch(() => {});
 }
 
@@ -192,8 +205,23 @@ function toggleMute() {
 
 /** Updates the mute button label. */
 function updateMuteButton() {
-    const button = document.getElementById('muteButton');
-    const label = button.querySelector('.button-label') || button;
-    label.textContent = soundManager.muted ? 'Ton aus' : 'Ton an';
-    button.setAttribute('aria-pressed', String(soundManager.muted));
+    const label = soundManager.muted ? 'Ton aus' : 'Ton an';
+    const actionLabel = soundManager.muted ? 'Ton einschalten' : 'Ton ausschalten';
+    document.querySelectorAll('[data-mute-button]').forEach((button) => {
+        const text = button.querySelector('.button-label');
+        if (text) text.textContent = label;
+        button.classList.toggle('is-muted', soundManager.muted);
+        button.setAttribute('aria-pressed', String(soundManager.muted));
+        button.setAttribute('aria-label', actionLabel);
+    });
+}
+
+/** Updates fullscreen button state and labels. */
+function updateFullscreenButtons() {
+    const isFullscreen = Boolean(document.fullscreenElement);
+    const label = isFullscreen ? 'Vollbild verlassen' : 'Vollbild einschalten';
+    document.querySelectorAll('[data-fullscreen-button]').forEach((button) => {
+        button.classList.toggle('is-active', isFullscreen);
+        button.setAttribute('aria-label', label);
+    });
 }

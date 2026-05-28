@@ -75,8 +75,8 @@
     }
 }
 
-@media (max-width: 900px), (hover: none) {
-    .is-playing .mobile-controls {
+@media (hover: none) and (pointer: coarse), (hover: none) and (any-pointer: coarse) {
+    .is-playing:not(.is-ended) .mobile-controls {
         display: flex;
     }
 
@@ -90,7 +90,23 @@
     }
 }
 
-@media (orientation: portrait) and (max-width: 900px) {
+@media (orientation: landscape) and (max-height: 520px) {
+    .game-actions {
+        top: 58px;
+        right: 10px;
+        gap: 6px;
+    }
+
+    .icon-button {
+        width: 40px;
+        min-width: 40px;
+        height: 40px;
+        min-height: 40px;
+    }
+}
+
+@media (orientation: portrait) and (max-width: 900px) and (hover: none) and (pointer: coarse),
+    (orientation: portrait) and (max-width: 900px) and (hover: none) and (any-pointer: coarse) {
     body:not(.legal-page) .orientation-message {
         display: grid;
     }

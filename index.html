@@ -50,6 +50,19 @@
                 <button data-key="THROW" type="button" aria-label="Werfen">F</button>
             </div>
         </nav>
+
+        <nav class="game-actions" aria-label="Spieloptionen">
+            <button id="gameHomeButton" class="icon-button" type="button" aria-label="Zurueck zum Hauptmenue">
+                <span class="icon icon-home" aria-hidden="true"></span>
+            </button>
+            <button id="gameFullscreenButton" class="icon-button" type="button" data-fullscreen-button aria-label="Vollbild einschalten">
+                <span class="icon icon-fullscreen" aria-hidden="true"></span>
+            </button>
+            <button id="gameMuteButton" class="icon-button" type="button" data-mute-button aria-pressed="false" aria-label="Ton ausschalten">
+                <span class="icon icon-sound" aria-hidden="true"></span>
+                <span class="button-label sr-only">Ton an</span>
+            </button>
+        </nav>
     </main>
 
     <div class="home-actions">
@@ -62,13 +75,15 @@
                 <img class="menu-button-image" src="img/menue/clean/hilfe.png" alt="">
                 <span class="button-label">Hilfe</span>
             </button>
-            <button id="fullscreenButton" class="menu-button menu-fullscreen" type="button">
+            <button id="fullscreenButton" class="menu-button menu-fullscreen" type="button" data-fullscreen-button aria-label="Vollbild einschalten">
                 <img class="menu-button-image" src="img/menue/clean/vollbild.png" alt="">
-                <span class="button-label">Vollbild</span>
+                <span class="menu-control-icon icon icon-fullscreen" aria-hidden="true"></span>
+                <span class="button-label sr-only">Vollbild</span>
             </button>
-            <button id="muteButton" class="menu-button menu-sound" type="button" aria-pressed="false">
+            <button id="muteButton" class="menu-button menu-sound" type="button" data-mute-button aria-pressed="false" aria-label="Ton ausschalten">
                 <img class="menu-button-image" src="img/menue/clean/ton.png" alt="">
-                <span class="button-label">Ton an</span>
+                <span class="menu-control-icon icon icon-sound" aria-hidden="true"></span>
+                <span class="button-label sr-only">Ton an</span>
             </button>
         </div>
         <a class="legal-link" href="impressum.html">Impressum</a>

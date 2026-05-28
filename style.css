@@ -109,6 +109,19 @@ button:hover {
     background-color: #55c7ad;
 }
 
+.sr-only {
+    position: absolute !important;
+    top: auto !important;
+    right: auto !important;
+    left: -10000px !important;
+    width: 1px !important;
+    height: 1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    transform: none !important;
+    white-space: nowrap !important;
+}
+
 .primary-button {
     background: #f5b83b;
 }
@@ -116,6 +129,7 @@ button:hover {
 .screen {
     position: absolute;
     inset: 0;
+    z-index: 2;
     display: grid;
     place-items: center;
     padding: 24px;
@@ -229,6 +243,17 @@ button:hover {
     white-space: nowrap;
 }
 
+.menu-control-icon {
+    position: absolute;
+    top: var(--label-top, 72%);
+    left: 50%;
+    width: clamp(30px, 4vw, 46px);
+    height: clamp(30px, 4vw, 46px);
+    color: #fff8d7;
+    filter: drop-shadow(0 3px 0 #4b090d) drop-shadow(0 4px 6px rgba(0, 0, 0, 0.35));
+    transform: translate(-50%, -50%);
+}
+
 .menu-start {
     --label-top: 72%;
     --label-left: 29%;
@@ -258,13 +283,25 @@ button:hover {
     right: 0;
     bottom: clamp(10px, 2vh, 20px);
     left: 0;
-    z-index: 2;
+    z-index: 5;
     display: block;
     width: max-content;
     margin: 0 auto;
-    color: #7d230e;
+    border: 2px solid #7a2b17;
+    border-radius: 8px;
+    background: #fff8d7;
+    color: #341808;
     font-size: 18px;
-    text-shadow: 0 1px 0 #fff8d7;
+    padding: 6px 14px;
+    text-decoration: none;
+    text-shadow: none;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.26);
+}
+
+.legal-link:hover,
+.legal-link:focus-visible {
+    background: #55c7ad;
+    color: #123032;
 }
 
 .hidden {
@@ -272,7 +309,9 @@ button:hover {
 }
 
 .end-screen {
+    z-index: 4;
     background: rgba(18, 48, 50, 0.78);
+    animation: endOverlayFade 220ms ease-out;
 }
 
 .end-screen img {
@@ -282,9 +321,36 @@ button:hover {
     margin-bottom: 28px;
 }
 
+.end-screen img.is-swapping {
+    animation: resultFrameIn 340ms ease-out both;
+}
+
+@keyframes endOverlayFade {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes resultFrameIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
 .mobile-controls {
     position: absolute;
     inset: auto 18px 14px;
+    z-index: 3;
     display: none;
     justify-content: space-between;
     pointer-events: none;
@@ -305,6 +371,130 @@ button:hover {
     -webkit-user-select: none;
     user-select: none;
     touch-action: none;
+}
+
+.game-actions {
+    position: absolute;
+    top: 74px;
+    right: 14px;
+    z-index: 3;
+    display: none;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.is-playing:not(.is-ended) .game-actions {
+    display: flex;
+}
+
+.is-ended .mobile-controls,
+.is-ended .game-actions {
+    display: none;
+}
+
+.icon-button {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    min-width: 44px;
+    height: 44px;
+    min-height: 44px;
+    border: 2px solid rgba(255, 248, 215, 0.86);
+    border-radius: 50%;
+    background: rgba(18, 48, 50, 0.82);
+    color: #fff8d7;
+    padding: 0;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.24);
+}
+
+.icon-button:hover,
+.icon-button:focus-visible,
+.icon-button.is-active {
+    background: #55c7ad;
+    color: #123032;
+}
+
+.icon {
+    position: relative;
+    display: block;
+    width: 24px;
+    height: 24px;
+    color: currentColor;
+}
+
+.menu-control-icon.icon {
+    width: clamp(30px, 4vw, 46px);
+    height: clamp(30px, 4vw, 46px);
+}
+
+.icon-fullscreen {
+    background:
+        linear-gradient(currentColor, currentColor) left top / 42% 2px no-repeat,
+        linear-gradient(currentColor, currentColor) left top / 2px 42% no-repeat,
+        linear-gradient(currentColor, currentColor) right top / 42% 2px no-repeat,
+        linear-gradient(currentColor, currentColor) right top / 2px 42% no-repeat,
+        linear-gradient(currentColor, currentColor) left bottom / 42% 2px no-repeat,
+        linear-gradient(currentColor, currentColor) left bottom / 2px 42% no-repeat,
+        linear-gradient(currentColor, currentColor) right bottom / 42% 2px no-repeat,
+        linear-gradient(currentColor, currentColor) right bottom / 2px 42% no-repeat;
+}
+
+.icon-home::before {
+    content: "";
+    position: absolute;
+    right: 5px;
+    bottom: 3px;
+    left: 5px;
+    height: 12px;
+    border: 2px solid currentColor;
+    border-top: 0;
+}
+
+.icon-home::after {
+    content: "";
+    position: absolute;
+    top: 4px;
+    left: 5px;
+    width: 14px;
+    height: 14px;
+    border-top: 2px solid currentColor;
+    border-left: 2px solid currentColor;
+    transform: rotate(45deg);
+}
+
+.icon-sound::before {
+    content: "";
+    position: absolute;
+    top: 8px;
+    left: 2px;
+    width: 12px;
+    height: 9px;
+    background: currentColor;
+    clip-path: polygon(0 25%, 42% 25%, 100% 0, 100% 100%, 42% 75%, 0 75%);
+}
+
+.icon-sound::after {
+    content: "";
+    position: absolute;
+    top: 5px;
+    right: 2px;
+    width: 9px;
+    height: 14px;
+    border: 2px solid currentColor;
+    border-left: 0;
+    border-radius: 0 14px 14px 0;
+}
+
+.is-muted .icon-sound::after {
+    top: 4px;
+    right: 2px;
+    width: 16px;
+    height: 16px;
+    border: 0;
+    border-radius: 0;
+    background:
+        linear-gradient(45deg, transparent 43%, currentColor 43%, currentColor 57%, transparent 57%),
+        linear-gradient(-45deg, transparent 43%, currentColor 43%, currentColor 57%, transparent 57%);
 }
 
 .help-dialog {
@@ -353,6 +543,13 @@ button:hover {
     width: min(780px, 100%);
     margin: 0 auto;
     border-radius: 8px;
-    background: rgba(255, 248, 215, 0.12);
+    background: rgba(255, 248, 215, 0.94);
+    color: #261406;
     padding: 32px;
+    box-shadow: 0 18px 36px rgba(0, 0, 0, 0.24);
+}
+
+.legal-content h1,
+.legal-content h2 {
+    color: #7a2b17;
 }

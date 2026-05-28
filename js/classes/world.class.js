@@ -1,3 +1,5 @@
+const THROW_COOLDOWN = 850;
+
 /**
  * Coordinates one playable game session.
  */
@@ -8,6 +10,7 @@ class World {
     animationFrame = null;
     throwableObjects = [];
     lastThrowAt = 0;
+    throwInputWasPressed = false;
     state = 'playing';
     endResult = '';
     endStartedAt = 0;
@@ -104,7 +107,8 @@ class World {
     /** Sets the camera position around Pepe. */
     setCamera() {
         const maxCamera = this.level.levelEndX - this.canvas.width;
-        this.cameraX = -Math.min(Math.max(this.character.x - 100, 0), maxCamera);
+        const targetX = Math.min(Math.max(this.character.x - 100, 0), maxCamera);
+        this.cameraX = -Math.round(targetX);
     }
 
     /** Draws the full game frame. */
@@ -157,6 +161,12 @@ class World {
 
     /** Handles bottle throw input. */
     handleBottleThrow() {
+        if (!this.keyboard.THROW) {
+            this.throwInputWasPressed = false;
+            return;
+        }
+        if (this.throwInputWasPressed) return;
+        this.throwInputWasPressed = true;
         if (!this.canThrowBottle()) return;
         this.throwBottle();
     }
@@ -166,9 +176,8 @@ class World {
      * @returns {boolean}
      */
     canThrowBottle() {
-        return this.keyboard.THROW
-            && this.character.canThrow()
-            && Date.now() - this.lastThrowAt > 500;
+        return this.character.canThrow()
+            && Date.now() - this.lastThrowAt > THROW_COOLDOWN;
     }
 
     /** Creates a new thrown bottle. */
