@@ -28,7 +28,7 @@ body {
     min-height: 100vh;
     margin: 0;
     overflow: hidden;
-    background: #f5d36d url("img/menue/clean/back2.png") center / cover no-repeat fixed;
+    background: #f5d36d url("img/menue/back2.png") center / cover no-repeat fixed;
     color: #fff8d7;
     font-family: "Boogaloo", Arial, Helvetica, sans-serif;
     gap: clamp(18px, 4vh, 56px);
@@ -195,21 +195,26 @@ button:hover {
 
 .menu-button {
     position: relative;
-    display: block;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(4px, 0.8vw, 8px);
     width: 100%;
-    aspect-ratio: 1;
+    aspect-ratio: 1 / 1.16;
     min-width: 0;
     min-height: 0;
     height: auto;
-    border-radius: 0;
-    background: transparent;
+    border: 2px solid rgba(255, 248, 215, 0.72);
+    border-radius: 8px;
+    background: rgba(18, 48, 50, 0.44);
     filter: drop-shadow(0 12px 14px rgba(0, 0, 0, 0.26));
-    padding: 0;
+    padding: clamp(6px, 1.1vw, 12px);
 }
 
 .menu-button:hover,
 .menu-button:focus-visible {
-    background: transparent;
+    background: rgba(85, 199, 173, 0.5);
     filter: drop-shadow(0 18px 18px rgba(0, 0, 0, 0.42));
     transform: translateY(-6px);
 }
@@ -226,56 +231,24 @@ button:hover {
     pointer-events: none;
 }
 
-.button-label {
-    position: absolute;
-    top: var(--label-top, 73%);
-    right: var(--label-right, 23%);
-    left: var(--label-left, 23%);
-    transform: translateY(-50%);
+.menu-button > .menu-button-image {
+    height: auto;
+    max-height: calc(100% - 34px);
+    flex: 1 1 auto;
+}
+
+.menu-button-text {
+    display: block;
+    width: 100%;
     color: #fff8d7;
     font-family: "Diplomata SC", Georgia, serif;
-    font-size: 20px;
+    font-size: clamp(13px, 1.8vw, 20px);
     line-height: 1.05;
     text-align: center;
     text-shadow:
         0 2px 0 #4b090d,
         0 4px 8px rgba(0, 0, 0, 0.35);
-    white-space: nowrap;
-}
-
-.menu-control-icon {
-    position: absolute;
-    top: var(--label-top, 72%);
-    left: 50%;
-    width: clamp(30px, 4vw, 46px);
-    height: clamp(30px, 4vw, 46px);
-    color: #fff8d7;
-    filter: drop-shadow(0 3px 0 #4b090d) drop-shadow(0 4px 6px rgba(0, 0, 0, 0.35));
-    transform: translate(-50%, -50%);
-}
-
-.menu-start {
-    --label-top: 72%;
-    --label-left: 29%;
-    --label-right: 29%;
-}
-
-.menu-help {
-    --label-top: 71%;
-    --label-left: 31%;
-    --label-right: 25%;
-}
-
-.menu-fullscreen {
-    --label-top: 72%;
-    --label-left: 22%;
-    --label-right: 22%;
-}
-
-.menu-sound {
-    --label-top: 72%;
-    --label-left: 26%;
-    --label-right: 26%;
+    pointer-events: none;
 }
 
 .legal-link {
@@ -395,106 +368,23 @@ button:hover {
 .icon-button {
     display: grid;
     place-items: center;
-    width: 44px;
-    min-width: 44px;
-    height: 44px;
-    min-height: 44px;
-    border: 2px solid rgba(255, 248, 215, 0.86);
-    border-radius: 50%;
-    background: rgba(18, 48, 50, 0.82);
-    color: #fff8d7;
+    width: 58px;
+    min-width: 58px;
+    height: 58px;
+    min-height: 58px;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
     padding: 0;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.24);
+    filter: drop-shadow(0 8px 10px rgba(0, 0, 0, 0.28));
 }
 
 .icon-button:hover,
 .icon-button:focus-visible,
 .icon-button.is-active {
-    background: #55c7ad;
-    color: #123032;
-}
-
-.icon {
-    position: relative;
-    display: block;
-    width: 24px;
-    height: 24px;
-    color: currentColor;
-}
-
-.menu-control-icon.icon {
-    width: clamp(30px, 4vw, 46px);
-    height: clamp(30px, 4vw, 46px);
-}
-
-.icon-fullscreen {
-    background:
-        linear-gradient(currentColor, currentColor) left top / 42% 2px no-repeat,
-        linear-gradient(currentColor, currentColor) left top / 2px 42% no-repeat,
-        linear-gradient(currentColor, currentColor) right top / 42% 2px no-repeat,
-        linear-gradient(currentColor, currentColor) right top / 2px 42% no-repeat,
-        linear-gradient(currentColor, currentColor) left bottom / 42% 2px no-repeat,
-        linear-gradient(currentColor, currentColor) left bottom / 2px 42% no-repeat,
-        linear-gradient(currentColor, currentColor) right bottom / 42% 2px no-repeat,
-        linear-gradient(currentColor, currentColor) right bottom / 2px 42% no-repeat;
-}
-
-.icon-home::before {
-    content: "";
-    position: absolute;
-    right: 5px;
-    bottom: 3px;
-    left: 5px;
-    height: 12px;
-    border: 2px solid currentColor;
-    border-top: 0;
-}
-
-.icon-home::after {
-    content: "";
-    position: absolute;
-    top: 4px;
-    left: 5px;
-    width: 14px;
-    height: 14px;
-    border-top: 2px solid currentColor;
-    border-left: 2px solid currentColor;
-    transform: rotate(45deg);
-}
-
-.icon-sound::before {
-    content: "";
-    position: absolute;
-    top: 8px;
-    left: 2px;
-    width: 12px;
-    height: 9px;
-    background: currentColor;
-    clip-path: polygon(0 25%, 42% 25%, 100% 0, 100% 100%, 42% 75%, 0 75%);
-}
-
-.icon-sound::after {
-    content: "";
-    position: absolute;
-    top: 5px;
-    right: 2px;
-    width: 9px;
-    height: 14px;
-    border: 2px solid currentColor;
-    border-left: 0;
-    border-radius: 0 14px 14px 0;
-}
-
-.is-muted .icon-sound::after {
-    top: 4px;
-    right: 2px;
-    width: 16px;
-    height: 16px;
-    border: 0;
-    border-radius: 0;
-    background:
-        linear-gradient(45deg, transparent 43%, currentColor 43%, currentColor 57%, transparent 57%),
-        linear-gradient(-45deg, transparent 43%, currentColor 43%, currentColor 57%, transparent 57%);
+    background: transparent;
+    filter: drop-shadow(0 12px 12px rgba(0, 0, 0, 0.38));
+    transform: translateY(-2px);
 }
 
 .help-dialog {
