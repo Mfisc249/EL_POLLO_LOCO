@@ -173,9 +173,20 @@ button:hover {
 }
 
 .home-actions {
-    width: min(1120px, 96vw);
+    width: min(940px, 94vw);
     margin-top: clamp(8px, 2vh, 28px);
+    border: 2px solid rgba(255, 236, 171, 0.62);
+    border-radius: 8px;
+    background:
+        linear-gradient(180deg, rgba(255, 223, 128, 0.16), rgba(54, 20, 6, 0.2)),
+        rgba(68, 28, 8, 0.48);
+    box-shadow:
+        0 18px 34px rgba(48, 14, 2, 0.34),
+        inset 0 1px 0 rgba(255, 248, 215, 0.35);
+    padding: clamp(12px, 1.8vw, 20px);
     text-align: center;
+    -webkit-backdrop-filter: blur(2px);
+    backdrop-filter: blur(2px);
 }
 
 .button-row {
@@ -188,7 +199,7 @@ button:hover {
 .menu-buttons {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: clamp(10px, 2vw, 28px);
+    gap: clamp(10px, 1.5vw, 18px);
     align-items: start;
     width: 100%;
 }
@@ -199,24 +210,36 @@ button:hover {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: clamp(4px, 0.8vw, 8px);
+    gap: clamp(7px, 1vw, 11px);
     width: 100%;
-    aspect-ratio: 1 / 1.16;
+    aspect-ratio: 1 / 0.92;
     min-width: 0;
     min-height: 0;
     height: auto;
-    border: 2px solid rgba(255, 248, 215, 0.72);
+    border: 2px solid rgba(255, 232, 158, 0.78);
     border-radius: 8px;
-    background: rgba(18, 48, 50, 0.44);
-    filter: drop-shadow(0 12px 14px rgba(0, 0, 0, 0.26));
-    padding: clamp(6px, 1.1vw, 12px);
+    background:
+        linear-gradient(180deg, rgba(255, 231, 163, 0.16), rgba(80, 34, 10, 0.2)),
+        rgba(91, 42, 13, 0.72);
+    box-shadow:
+        0 10px 18px rgba(45, 13, 2, 0.26),
+        inset 0 1px 0 rgba(255, 248, 215, 0.34);
+    filter: none;
+    padding: clamp(9px, 1.1vw, 14px);
+    transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease, background 160ms ease;
 }
 
 .menu-button:hover,
 .menu-button:focus-visible {
-    background: rgba(85, 199, 173, 0.5);
-    filter: drop-shadow(0 18px 18px rgba(0, 0, 0, 0.42));
-    transform: translateY(-6px);
+    border-color: #ffe792;
+    background:
+        linear-gradient(180deg, rgba(255, 232, 151, 0.28), rgba(88, 38, 11, 0.16)),
+        rgba(111, 52, 16, 0.86);
+    box-shadow:
+        0 14px 24px rgba(45, 13, 2, 0.36),
+        0 0 0 3px rgba(255, 218, 93, 0.18),
+        inset 0 1px 0 rgba(255, 248, 215, 0.45);
+    transform: translateY(-4px) scale(1.02);
 }
 
 .menu-button:active {
@@ -233,39 +256,38 @@ button:hover {
 
 .menu-button > .menu-button-image {
     height: auto;
-    max-height: calc(100% - 34px);
+    max-height: calc(100% - 30px);
+    max-width: 78%;
     flex: 1 1 auto;
 }
 
 .menu-button-text {
     display: block;
     width: 100%;
-    color: #fff8d7;
-    font-family: "Diplomata SC", Georgia, serif;
-    font-size: clamp(13px, 1.8vw, 20px);
-    line-height: 1.05;
+    color: #ffe792;
+    font-family: "Boogaloo", Arial, Helvetica, sans-serif;
+    font-size: clamp(18px, 2.1vw, 28px);
+    line-height: 1;
     text-align: center;
-    text-shadow:
-        0 2px 0 #4b090d,
-        0 4px 8px rgba(0, 0, 0, 0.35);
+    text-shadow: 0 2px 0 #4b090d, 0 4px 8px rgba(0, 0, 0, 0.38);
     pointer-events: none;
 }
 
 .legal-link {
     position: fixed;
-    right: 0;
+    right: clamp(10px, 2vw, 24px);
     bottom: clamp(10px, 2vh, 20px);
-    left: 0;
+    left: auto;
     z-index: 5;
     display: block;
     width: max-content;
-    margin: 0 auto;
+    margin: 0;
     border: 2px solid #7a2b17;
     border-radius: 8px;
-    background: #fff8d7;
+    background: rgba(255, 248, 215, 0.9);
     color: #341808;
-    font-size: 18px;
-    padding: 6px 14px;
+    font-size: 16px;
+    padding: 5px 12px;
     text-decoration: none;
     text-shadow: none;
     box-shadow: 0 8px 18px rgba(0, 0, 0, 0.26);

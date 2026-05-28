@@ -205,12 +205,14 @@ function toggleMute() {
 
 /** Updates the mute button label. */
 function updateMuteButton() {
-    const label = soundManager.muted ? 'Ton aus' : 'Ton an';
+    const label = soundManager.muted ? 'Ton Aus' : 'Ton An';
     const actionLabel = soundManager.muted ? 'Ton einschalten' : 'Ton ausschalten';
     document.querySelectorAll('[data-mute-button]').forEach((button) => {
         const text = button.querySelector('.button-label');
+        const menuText = button.querySelector('.menu-button-text');
         const image = button.querySelector('.menu-button-image');
         if (text) text.textContent = label;
+        if (menuText) menuText.textContent = label;
         if (image) image.src = soundManager.muted ? 'img/menue/mute.png' : 'img/menue/lautstarke.png';
         button.classList.toggle('is-muted', soundManager.muted);
         button.setAttribute('aria-pressed', String(soundManager.muted));
