@@ -42,6 +42,7 @@ const ENDBOSS_IMAGES_DEAD = [
 const ENDBOSS_CHASE_DISTANCE = 620;
 const ENDBOSS_STOP_OFFSET = -60;
 const ENDBOSS_LEFT_LIMIT = 0;
+const ENDBOSS_TURN_TOLERANCE = 4;
 
 /**
  * Represents the final boss enemy.
@@ -105,10 +106,35 @@ class Endboss extends MovableObject {
     moveWhenClose(characterX) {
         if (this.x - characterX < ENDBOSS_CHASE_DISTANCE) this.hasSeenCharacter = true;
         if (!this.hasSeenCharacter) return;
-        const stopX = Math.max(ENDBOSS_LEFT_LIMIT, characterX + ENDBOSS_STOP_OFFSET);
-        if (this.x > stopX) {
-            this.moveLeft(stopX);
-        }
+        this.moveToTarget(characterX);
+    }
+
+    /**
+     * Moves left or right toward Pepe's current side.
+     * @param {number} characterX Pepe's x-position.
+     */
+    moveToTarget(characterX) {
+        const targetX = Math.max(ENDBOSS_LEFT_LIMIT, characterX + ENDBOSS_STOP_OFFSET);
+        if (this.x > targetX + ENDBOSS_TURN_TOLERANCE) return this.walkLeft(targetX);
+        if (this.x < targetX - ENDBOSS_TURN_TOLERANCE) this.walkRight(targetX);
+    }
+
+    /**
+     * Moves the boss to the left-facing direction.
+     * @param {number} targetX Left movement limit.
+     */
+    walkLeft(targetX) {
+        this.otherDirection = false;
+        this.moveLeft(targetX);
+    }
+
+    /**
+     * Moves the boss to the right-facing direction.
+     * @param {number} targetX Right movement limit.
+     */
+    walkRight(targetX) {
+        this.otherDirection = true;
+        this.moveRight(targetX);
     }
 
     /**
