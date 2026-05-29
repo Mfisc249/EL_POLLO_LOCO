@@ -2,6 +2,12 @@
 
 Ein kleines Jump-and-Run-Spiel im Stil eines Wuesten-Abenteuers. Du steuerst Pepe durch die Landschaft, sammelst Coins und Salsa-Flaschen, weichst Huehnern aus oder besiegst sie von oben und trittst am Ende gegen den Endboss an.
 
+## Screenshots
+
+![Startscreen von El Pollo Loco](screenshots/start-screen.png)
+
+![Gameplay mit Pepe, Sammelobjekten und Gegnern](screenshots/gameplay.png)
+
 ## Features
 
 - Spielbare Canvas-Welt mit seitlichem Scrolling
