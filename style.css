@@ -10,12 +10,6 @@
     font-display: swap;
 }
 
-@font-face {
-    font-family: "Diplomata SC";
-    src: url("fonts/DiplomataSC-Regular.ttf") format("truetype");
-    font-display: swap;
-}
-
 * {
     box-sizing: border-box;
 }
