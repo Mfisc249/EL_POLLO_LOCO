@@ -1,4 +1,6 @@
 const THROW_COOLDOWN = 850;
+const BOTTLE_REFILL_DELAY = 2500;
+const BOTTLE_REFILL_DISTANCE = 220;
 
 /**
  * Coordinates one playable game session.
@@ -15,6 +17,7 @@ class World {
     endResult = '';
     endStartedAt = 0;
     endDelay = 1900;
+    lastBottleRefillAt = 0;
 
     /**
      * Creates a game world for one play session.
@@ -65,6 +68,7 @@ class World {
         this.updateLevelObjects();
         this.handleBottleThrow();
         this.checkCollisions();
+        this.refillBottleIfNeeded();
         this.updateStatusBars();
         this.setCamera();
     }
@@ -309,9 +313,37 @@ class World {
      * @param {MovableObject} target Enemy target.
      */
     damageBottleTarget(target) {
-        target instanceof Endboss ? target.hit(20) : target.kill();
+        target instanceof Endboss ? target.hit(25) : target.kill();
         target instanceof Endboss ? this.playSound('playBoss') : this.playSound('playEnemyHit');
         if (this.level.endboss.isDead()) this.finishGame('won');
+    }
+
+    /** Adds a backup bottle if the boss fight can no longer be won. */
+    refillBottleIfNeeded() {
+        if (!this.shouldRefillBottle()) return;
+        this.level.bottles.push(this.createRefillBottle());
+        this.lastBottleRefillAt = Date.now();
+    }
+
+    /**
+     * Checks whether no usable bottle is left while the endboss is alive.
+     * @returns {boolean}
+     */
+    shouldRefillBottle() {
+        return !this.level.endboss.isDead()
+            && this.character.bottles === 0
+            && this.level.bottles.length === 0
+            && this.throwableObjects.length === 0
+            && Date.now() - this.lastBottleRefillAt > BOTTLE_REFILL_DELAY;
+    }
+
+    /**
+     * Creates a new bottle close to Pepe, but inside the level.
+     * @returns {CollectableObject}
+     */
+    createRefillBottle() {
+        const x = Math.min(this.character.x + BOTTLE_REFILL_DISTANCE, this.level.levelEndX - 180);
+        return new CollectableObject('bottle', Math.max(160, x), 345);
     }
 
     /**

@@ -40,8 +40,8 @@ const ENDBOSS_IMAGES_DEAD = [
 ];
 
 const ENDBOSS_CHASE_DISTANCE = 620;
-const ENDBOSS_STOP_OFFSET = 35;
-const ENDBOSS_LEFT_LIMIT = 1900;
+const ENDBOSS_STOP_OFFSET = -60;
+const ENDBOSS_LEFT_LIMIT = 0;
 
 /**
  * Represents the final boss enemy.
@@ -49,6 +49,7 @@ const ENDBOSS_LEFT_LIMIT = 1900;
 class Endboss extends MovableObject {
     speed = 1.9;
     damage = 25;
+    hasSeenCharacter = false;
 
     /** Creates the endboss and preloads its animations. */
     constructor() {
@@ -102,8 +103,10 @@ class Endboss extends MovableObject {
      * @param {number} characterX Pepe's x-position.
      */
     moveWhenClose(characterX) {
+        if (this.x - characterX < ENDBOSS_CHASE_DISTANCE) this.hasSeenCharacter = true;
+        if (!this.hasSeenCharacter) return;
         const stopX = Math.max(ENDBOSS_LEFT_LIMIT, characterX + ENDBOSS_STOP_OFFSET);
-        if (this.x - characterX < ENDBOSS_CHASE_DISTANCE && this.x > stopX) {
+        if (this.x > stopX) {
             this.moveLeft(stopX);
         }
     }
